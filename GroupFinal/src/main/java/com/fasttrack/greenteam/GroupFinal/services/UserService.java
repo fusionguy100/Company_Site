@@ -1,4 +1,4 @@
 package com.fasttrack.greenteam.GroupFinal.services;
 
-public class UserService {
+public interface UserService {
 }
