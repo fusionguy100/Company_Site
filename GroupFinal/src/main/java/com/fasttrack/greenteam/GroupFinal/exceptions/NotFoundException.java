@@ -9,10 +9,11 @@ import java.io.Serial;
 @AllArgsConstructor
 @Getter
 @Setter
-public class BadRequestException extends RuntimeException {
+public class NotFoundException extends RuntimeException {
 
     @Serial
-    private static final long serialVersionUID = 3776307881335862810L;
+    private static final long serialVersionUID = 3146054180939216847L;
 
     private String message;
+
 }

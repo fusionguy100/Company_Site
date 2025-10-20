@@ -9,10 +9,11 @@ import java.io.Serial;
 @AllArgsConstructor
 @Getter
 @Setter
-public class BadRequestException extends RuntimeException {
+public class ConflictException extends RuntimeException{
 
     @Serial
-    private static final long serialVersionUID = 3776307881335862810L;
+    private static final long serialVersionUID = -3589848691875090488L;
 
     private String message;
+
 }
