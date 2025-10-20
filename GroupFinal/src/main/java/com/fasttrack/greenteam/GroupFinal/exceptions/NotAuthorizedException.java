@@ -9,10 +9,11 @@ import java.io.Serial;
 @AllArgsConstructor
 @Getter
 @Setter
-public class BadRequestException extends RuntimeException {
+public class NotAuthorizedException extends RuntimeException {
 
     @Serial
-    private static final long serialVersionUID = 3776307881335862810L;
+    private static final long serialVersionUID = -2589848991875090488L;
+
 
     private String message;
 }
