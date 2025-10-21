@@ -11,6 +11,7 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 @Data
+@Table(name="users")
 public class User {
 
     @Id
@@ -22,10 +23,27 @@ public class User {
     @Embedded
     Credentials credentials;
 
-    private boolean active;
-    private boolean admin;
+    private Boolean active;
+    private Boolean admin;
     private String status;
 
+    @OneToMany(mappedBy="author")
+    private List<Announcement> announcements;
+
     @ManyToMany
-    private List<Company> announcements;
+    @JoinTable(
+            name="user_company",
+            joinColumns = @JoinColumn(name="user_id"),
+            inverseJoinColumns = @JoinColumn(name="company_id")
+    )
+    private List<Company> companies;
+
+    @ManyToMany
+    @JoinTable(
+            name="user_team",
+            joinColumns = @JoinColumn(name="user_id"),
+            inverseJoinColumns = @JoinColumn(name="team_id")
+    )
+    private List<Team> teams;
+
 }

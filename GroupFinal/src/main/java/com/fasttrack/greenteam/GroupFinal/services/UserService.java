@@ -16,10 +16,14 @@ public interface UserService {
 
     UserResponseDto updateUser(Long id, UserRequestDto userRequestDto);
 
-    void deleteUser(Long id);
+    UserResponseDto deleteUser(Long id);
 
     List<UserResponseDto> getActiveUsers();
 
     List<UserResponseDto> getAdminUsers();
+
+//    List<CompaniesDto> getUserCompanies(Long id);
+//
+//    List<TeamsDto> getUserTeams(Long id);
 
 }
