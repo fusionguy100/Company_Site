@@ -1,17 +1,13 @@
 package com.fasttrack.greenteam.GroupFinal.dtos;
 
-
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class TeamResponseDto {
-    private Long id;
-
+public class ProjectRequestDto {
     private String name;
-
     private String description;
-
-    private CompanyResponseDto company;
+    private Boolean active;
+    private Long team;
 }

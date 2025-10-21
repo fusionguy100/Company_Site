@@ -110,6 +110,11 @@ public class UserServiceImpl implements UserService {
                 .toList();
     }
 
+    @Override
+    public boolean isAdmin(Long userId) {
+        return userRepository.existsByIdAndActiveIsTrueAndAdminIsTrue(userId);
+    }
+
     public Boolean validateCredentials(CredentialsDto credentialsDto) {
         if (credentialsDto == null) {
             throw new BadRequestException("Credentials information is required");
