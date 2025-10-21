@@ -5,9 +5,8 @@ import lombok.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CompanyResponseDto {
+public class CompanyRequestDto {
 
-    private Long id;
     private String name;
     private String description;
     private String website;
