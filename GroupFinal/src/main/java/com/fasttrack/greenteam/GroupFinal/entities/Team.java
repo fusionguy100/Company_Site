@@ -10,12 +10,13 @@ import java.util.Set;
 @AllArgsConstructor
 public class Team {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     private Long id;
 
     private String name;
 
     private String description;
+
     //many teams belong to one company
     @ManyToOne
     @JoinColumn(name = "company_id")
