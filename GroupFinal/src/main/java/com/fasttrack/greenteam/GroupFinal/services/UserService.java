@@ -22,6 +22,8 @@ public interface UserService {
 
     List<UserResponseDto> getAdminUsers();
 
+    boolean isAdmin(Long userId);
+
 //    List<CompaniesDto> getUserCompanies(Long id);
 //
 //    List<TeamsDto> getUserTeams(Long id);

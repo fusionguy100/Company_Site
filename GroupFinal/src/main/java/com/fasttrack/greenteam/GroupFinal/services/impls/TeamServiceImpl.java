@@ -13,6 +13,6 @@ import java.util.List;
 public class TeamServiceImpl implements TeamService {
     @Override
     public List<TeamResponseDto> getTeams() {
-        return
+        return null;
     }
 }

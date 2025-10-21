@@ -11,8 +11,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     boolean existsByCredentialsUsernameAndActiveIsTrue(String username);
 
-    User findByCredentialsUsernameAndCredentialsPassword(String username, String password);
+    boolean existsByIdAndActiveIsTrueAndAdminIsTrue(Long userId);
 
+    User findByCredentialsUsernameAndCredentialsPassword(String username, String password);
 
     boolean existsByIdAndActiveIsFalse(Long id);
 
