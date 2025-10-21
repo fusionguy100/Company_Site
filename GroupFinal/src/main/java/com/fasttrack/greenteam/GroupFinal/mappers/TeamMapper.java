@@ -4,25 +4,17 @@ import com.fasttrack.greenteam.GroupFinal.dtos.TeamRequestDto;
 import com.fasttrack.greenteam.GroupFinal.dtos.TeamResponseDto;
 import com.fasttrack.greenteam.GroupFinal.entities.Team;
 import com.fasttrack.greenteam.GroupFinal.entities.Company;
-import org.mapstruct.*;
+import org.mapstruct.Mapper;
+import org.mapstruct.Named;
+import org.mapstruct.Mapping;
 
-@Mapper(componentModel = "spring")
+import java.util.List;
+
+@Mapper(componentModel = "spring", uses = {CompanyMapper.class})
 public interface TeamMapper {
 
+    TeamResponseDto entityToDto(Team team);
+    List<TeamResponseDto> entitiesToDtos(List<Team> teams);
+    Team dtoToEntity(TeamRequestDto teamRequestDto);
 
-    @Mapping(source = "company.id", target = "company")
-    TeamResponseDto toDto(Team team);
-
-
-    @Mapping(target = "company", source = "company", qualifiedByName = "mapCompanyIdToCompany")
-    Team toEntity(TeamRequestDto dto);
-
-    // Helper method: convert companyId (Long) to a Company object reference
-    @Named("mapCompanyIdToCompany")
-    default Company mapCompanyIdToCompany(Long companyId) {
-        if (companyId == null) return null;
-        Company company = new Company();
-        company.setId(companyId);
-        return company;
-    }
 }
