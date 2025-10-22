@@ -5,6 +5,7 @@ import com.fasttrack.greenteam.GroupFinal.dtos.ProjectResponseDto;
 import com.fasttrack.greenteam.GroupFinal.dtos.TeamRequestDto;
 import com.fasttrack.greenteam.GroupFinal.dtos.TeamResponseDto;
 import com.fasttrack.greenteam.GroupFinal.dtos.UserResponseDto;
+import com.fasttrack.greenteam.GroupFinal.entities.Company;
 import com.fasttrack.greenteam.GroupFinal.entities.Project;
 import com.fasttrack.greenteam.GroupFinal.entities.Team;
 import com.fasttrack.greenteam.GroupFinal.entities.User;
@@ -14,6 +15,7 @@ import com.fasttrack.greenteam.GroupFinal.exceptions.NotFoundException;
 import com.fasttrack.greenteam.GroupFinal.mappers.ProjectMapper;
 import com.fasttrack.greenteam.GroupFinal.mappers.TeamMapper;
 import com.fasttrack.greenteam.GroupFinal.mappers.UserMapper;
+import com.fasttrack.greenteam.GroupFinal.repositories.CompanyRepository;
 import com.fasttrack.greenteam.GroupFinal.repositories.TeamRepository;
 import com.fasttrack.greenteam.GroupFinal.repositories.UserRepository;
 import com.fasttrack.greenteam.GroupFinal.services.TeamService;
@@ -34,6 +36,7 @@ public class TeamServiceImpl implements TeamService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final ProjectMapper projectMapper;
+    private final CompanyRepository companyRepository;
 
     @Override
     public List<TeamResponseDto> getTeams() {
@@ -42,17 +45,33 @@ public class TeamServiceImpl implements TeamService {
 
     @Override
     public TeamResponseDto createTeam(Long userId, TeamRequestDto teamRequestDto) {
-        //for now without Spring Security
-        User user = userRepository.findById(userId).orElseThrow(() -> new NotFoundException("User not found!"));
-        if(!user.getAdmin()) {
-            throw new NotAuthorizedException("Only an admin can create a new teams!");
+        // Check user validity
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException("User not found!"));
+
+        if (!Boolean.TRUE.equals(user.getAdmin())) {
+            throw new NotAuthorizedException("Only admins can create new teams!");
         }
+
         validateTeam(teamRequestDto);
 
         Team team = teamMapper.dtoToEntity(teamRequestDto);
+
+
+        Company company = companyRepository.findById(teamRequestDto.getCompany())
+                .orElseThrow(() -> new NotFoundException("Company not found!"));
+        team.setCompany(company);
+
+        if (teamRequestDto.getUserIds() != null && !teamRequestDto.getUserIds().isEmpty()) {
+            List<User> users = userRepository.findAllById(teamRequestDto.getUserIds());
+            for (User member : users) {
+                member.getTeams().add(team);
+            }
+            team.setUsers(users);
+        }
+
         Team savedTeam = teamRepository.saveAndFlush(team);
         return teamMapper.entityToDto(savedTeam);
-
     }
 
     @Override

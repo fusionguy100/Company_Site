@@ -4,6 +4,8 @@ package com.fasttrack.greenteam.GroupFinal.dtos;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 public class TeamRequestDto {
@@ -12,4 +14,6 @@ public class TeamRequestDto {
     private String description;
 
     private Long company;
+
+    List<Long> userIds;
 }
