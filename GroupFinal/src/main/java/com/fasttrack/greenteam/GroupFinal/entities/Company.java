@@ -3,6 +3,7 @@ package com.fasttrack.greenteam.GroupFinal.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -35,7 +36,7 @@ public class Company {
     private List<Team> teams;
 
     @ManyToMany(mappedBy = "companies")
-    private List<User> users;
+    private List<User> users = new ArrayList<>();
 
 
 }
