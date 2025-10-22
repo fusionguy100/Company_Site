@@ -3,6 +3,8 @@ package com.fasttrack.greenteam.GroupFinal.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "companies")
 @Data
@@ -25,4 +27,15 @@ public class Company {
     private String location;
 
     private String contactEmail;
+
+    @OneToMany(mappedBy = "company")
+    private List<Announcement> announcements;
+
+    @OneToMany(mappedBy = "company")
+    private List<Team> teams;
+
+    @ManyToMany(mappedBy = "companies")
+    private List<User> users;
+
+
 }

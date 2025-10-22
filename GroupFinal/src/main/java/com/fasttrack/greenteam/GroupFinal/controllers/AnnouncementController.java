@@ -8,8 +8,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController("/announcements")
+@RestController()
 @AllArgsConstructor
+@RequestMapping("/announcements")
 public class AnnouncementController {
     private final AnnouncementService announcementService;
 

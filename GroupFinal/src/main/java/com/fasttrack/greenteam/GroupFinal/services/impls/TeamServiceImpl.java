@@ -20,7 +20,6 @@ import com.fasttrack.greenteam.GroupFinal.services.TeamService;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.annotations.NotFound;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

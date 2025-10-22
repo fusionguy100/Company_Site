@@ -23,12 +23,7 @@ public class Team {
     private Company company;
 
     //Many users belong to many teams (join table user_team)
-    @ManyToMany
-    @JoinTable(
-            name = "user_team",
-            joinColumns = @JoinColumn(name = "team_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id")
-    )
+    @ManyToMany(mappedBy="teams")
     private Set<User> users = new HashSet<>();
 
     @OneToMany(mappedBy = "team", cascade = CascadeType.ALL, orphanRemoval = true)

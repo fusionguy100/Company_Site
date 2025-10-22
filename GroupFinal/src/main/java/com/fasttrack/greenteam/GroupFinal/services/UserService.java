@@ -24,6 +24,7 @@ public interface UserService {
 
     boolean isAdmin(Long userId);
 
+    User validateCredentials(String username, String password);
 //    List<CompaniesDto> getUserCompanies(Long id);
 //
 //    List<TeamsDto> getUserTeams(Long id);

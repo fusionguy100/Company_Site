@@ -53,7 +53,7 @@ public class UserServiceImpl implements UserService {
         if (userRepository.existsByCredentialsUsernameAndActiveIsFalse(credentials.getUsername())) {
             User user = userRepository.findByCredentialsUsernameAndCredentialsPassword(credentials.getUsername(),
                     credentials.getPassword());
-            user.setActive(true);
+            user.setActive(Boolean.valueOf(true));
             user.setProfile(profileMapper.dtoToEntity(userRequestDto.getProfile()));
             return userMapper.entityToDto(userRepository.save(user));
         }
@@ -89,7 +89,7 @@ public class UserServiceImpl implements UserService {
         }
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("User not found"));
-        user.setActive(false);
+        user.setActive(Boolean.valueOf(false));
         userRepository.save(user);
         return userMapper.entityToDto(user);
     }
@@ -125,7 +125,7 @@ public class UserServiceImpl implements UserService {
         if (credentialsDto.getPassword() == null || credentialsDto.getPassword().isBlank()) {
             throw new BadRequestException("Password is required");
         }
-        return true;
+        return (Boolean) true;
     }
     public Boolean validateProfile(ProfileDto profileDto) {
         if (profileDto == null) {
@@ -140,6 +140,15 @@ public class UserServiceImpl implements UserService {
         if (profileDto.getEmail() == null || profileDto.getEmail().isBlank()) {
             throw new BadRequestException("Email is required");
         }
-        return true;
+
+        return (Boolean) true;
+    }
+
+    public User validateCredentials(String username, String password) {
+        User user = userRepository.findByCredentialsUsernameAndCredentialsPassword(username, password);
+        if (user == null) {
+            throw new NotFoundException("Invalid credentials");
+        }
+        return user;
     }
 }

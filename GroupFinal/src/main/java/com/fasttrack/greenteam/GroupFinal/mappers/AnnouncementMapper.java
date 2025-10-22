@@ -4,6 +4,7 @@ import com.fasttrack.greenteam.GroupFinal.dtos.AnnouncementRequestDto;
 import com.fasttrack.greenteam.GroupFinal.dtos.AnnouncementResponseDto;
 import com.fasttrack.greenteam.GroupFinal.entities.Announcement;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 import java.util.List;
 
@@ -12,5 +13,6 @@ public interface AnnouncementMapper {
 
     AnnouncementResponseDto entityToDto(Announcement announcement);
     List<AnnouncementResponseDto> entityToDtos(List<Announcement> announcements);
+    @Mapping(target="company", ignore = true)
     Announcement dtoToEntity(AnnouncementRequestDto announcementRequestDto);
 }

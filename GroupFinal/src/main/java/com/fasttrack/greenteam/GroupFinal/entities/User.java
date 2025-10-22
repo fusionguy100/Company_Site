@@ -23,8 +23,8 @@ public class User {
     @Embedded
     Credentials credentials;
 
-    private Boolean active;
     private Boolean admin;
+    private Boolean active;
     private String status;
 
     @OneToMany(mappedBy="author")

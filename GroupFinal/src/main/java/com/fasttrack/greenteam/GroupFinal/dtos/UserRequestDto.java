@@ -10,5 +10,4 @@ import lombok.NoArgsConstructor;
 public class UserRequestDto {
     CredentialsDto credentials;
     ProfileDto profile;
-    boolean admin;
 }
