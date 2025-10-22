@@ -45,22 +45,17 @@ public class TeamServiceImpl implements TeamService {
 
     @Override
     public TeamResponseDto createTeam(Long userId, TeamRequestDto teamRequestDto) {
-        // Check user validity
+
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("User not found!"));
 
-        if (!Boolean.TRUE.equals(user.getAdmin())) {
-            throw new NotAuthorizedException("Only admins can create new teams!");
-        }
-
         validateTeam(teamRequestDto);
-
         Team team = teamMapper.dtoToEntity(teamRequestDto);
-
 
         Company company = companyRepository.findById(teamRequestDto.getCompany())
                 .orElseThrow(() -> new NotFoundException("Company not found!"));
         team.setCompany(company);
+
 
         if (teamRequestDto.getUserIds() != null && !teamRequestDto.getUserIds().isEmpty()) {
             List<User> users = userRepository.findAllById(teamRequestDto.getUserIds());
@@ -73,6 +68,7 @@ public class TeamServiceImpl implements TeamService {
         Team savedTeam = teamRepository.saveAndFlush(team);
         return teamMapper.entityToDto(savedTeam);
     }
+
 
     @Override
     public TeamResponseDto getTeamByID(Long id) {
@@ -89,13 +85,6 @@ public class TeamServiceImpl implements TeamService {
 
     @Override
     public TeamResponseDto addUserToTeam(Long teamId, Long userId, Long currentUserId) {
-        User currentUser = userRepository.findById(currentUserId)
-                .orElseThrow(() -> new NotFoundException("User not found"));
-
-        if (!currentUser.getAdmin()) {
-            throw new NotAuthorizedException("You must be an admin to perform this action");
-        }
-
         if (teamId == null || userId == null) {
             throw new BadRequestException("Team ID and User ID cannot be null!");
         }
@@ -105,17 +94,18 @@ public class TeamServiceImpl implements TeamService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("No user found with that id!"));
 
-        if(!team.getUsers().contains(user))
+        if (!team.getUsers().contains(user)) {
             team.getUsers().add(user);
-
-        if(!user.getTeams().contains(team))
+        }
+        if (!user.getTeams().contains(team)) {
             user.getTeams().add(team);
-
+        }
         teamRepository.saveAndFlush(team);
         userRepository.saveAndFlush(user);
 
         return teamMapper.entityToDto(team);
     }
+
 
     @Override
     public UserResponseDto removeUserFromTeam(Long teamId, Long userId) {
