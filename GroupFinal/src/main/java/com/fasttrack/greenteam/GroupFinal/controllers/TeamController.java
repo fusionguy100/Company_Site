@@ -16,6 +16,7 @@ import java.util.List;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/teams")
+@CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true")
 public class TeamController {
 
     private final TeamService teamService;
