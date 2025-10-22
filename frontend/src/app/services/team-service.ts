@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class TeamService {
-  private apiUrl = 'http://localhost:8080/teams'; // backend base URL
+  private apiUrl = 'http://localhost:8080/teams';
 
   constructor(private http: HttpClient) {}
 
@@ -14,10 +14,10 @@ export class TeamService {
     return this.http.get<TeamResponseDto[]>(this.apiUrl, { withCredentials: true });
   }
 
-
   getTeamById(teamId: number): Observable<TeamResponseDto> {
     return this.http.get<TeamResponseDto>(`${this.apiUrl}/${teamId}`, { withCredentials: true });
   }
+
 
   createTeam(teamRequest: TeamRequestDto): Observable<TeamResponseDto> {
     return this.http.post<TeamResponseDto>(
@@ -43,12 +43,14 @@ export class TeamService {
     );
   }
 
+
   removeUserFromTeam(teamId: number, userId: number): Observable<UserResponseDto> {
     return this.http.delete<UserResponseDto>(
       `${this.apiUrl}/${teamId}/users/${userId}`,
       { withCredentials: true }
     );
   }
+
 
   deleteTeam(teamId: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${teamId}`, { withCredentials: true });
@@ -61,6 +63,7 @@ export interface TeamRequestDto {
   name: string;
   description: string;
   company: number;
+  userIds?: number[];
 }
 
 export interface CompanyResponseDto {
