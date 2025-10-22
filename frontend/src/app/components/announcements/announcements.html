@@ -1,6 +1,11 @@
-<app-navbar></app-navbar>
-
 <div class="announcements-container">
-  <h1>Announcements</h1>
-  <p>announcements works!</p>
+  <h1>Announcements Page</h1>
+
+  <div *ngIf="company; else noCompany">
+    <p>Selected company: {{ company.name }}</p>
+  </div>
+
+  <ng-template #noCompany>
+    <p>No company selected.</p>
+  </ng-template>
 </div>

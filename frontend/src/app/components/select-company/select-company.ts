@@ -2,14 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
+import { CompanyStateService, Company } from '../../services/company-state.service';
 import { Navbar } from '../navbar/navbar';
-
-interface Company {
-  id: number;
-  name: string;
-  address?: string;
-  description?: string;
-}
 
 @Component({
   selector: 'app-select-company',
@@ -24,7 +19,11 @@ export class SelectCompany implements OnInit {
   loading = false;
   error: string | null = null;
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private companyState: CompanyStateService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.fetchCompanies();
@@ -34,22 +33,25 @@ export class SelectCompany implements OnInit {
     this.loading = true;
     this.error = null;
 
-    this.http.get<Company[]>('http://localhost:8080/companies')
+this.http.get<Company[]>('http://localhost:8080/companies')
       .subscribe({
         next: (data) => {
           this.companies = data;
           this.loading = false;
         },
         error: (err) => {
-          this.error = 'Failed to load companies';
           console.error(err);
+          this.error = 'Failed to load companies';
           this.loading = false;
         }
       });
   }
 
   onSelectCompany(): void {
-    console.log('Selected company ID:', this.selectedCompanyId);
-    // You can navigate or store the selected company here
+    const company = this.companies.find(c => c.id === this.selectedCompanyId);
+    if (company) {
+      this.companyState.setCompany(company);
+      this.router.navigate(['/announcements']);
+    }
   }
 }
