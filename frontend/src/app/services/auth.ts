@@ -1,24 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { User, Credentials } from '../models';
 
-
-export interface User {
-  id: number;
-  profile: {
-    firstName?: string;
-    lastName?: string;
-    email?: string;
-    phone?: string;
-  };
-  admin: boolean;
-  active: boolean;
-}
-
-export interface Credentials {
-  username: string;
-  password: string;
-}
 
 @Injectable({
   providedIn: 'root'
