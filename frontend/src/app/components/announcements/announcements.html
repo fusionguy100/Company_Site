@@ -4,9 +4,15 @@
 
   <div *ngIf="company; else noCompany">
     <p>Selected company: {{ company.name }}</p>
+<div>
+  <app-navbar></app-navbar>
+  <div class="announcements-container">
+    <h1>Announcements</h1>
+    <hr>
+    <app-announcement-card *ngFor="let a of announcements;"
+      [announcement]="a"></app-announcement-card>
+    <div *ngIf="company">
+      <p>Selected company: {{ company.name }}</p>
+    </div>
   </div>
-
-  <ng-template #noCompany>
-    <p>No company selected.</p>
-  </ng-template>
 </div>
