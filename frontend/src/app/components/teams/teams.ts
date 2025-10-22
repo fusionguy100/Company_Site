@@ -48,19 +48,19 @@ export class Teams implements OnInit {
     this.teamService.getAllTeams().subscribe({
       next: (data) => {
         this.teams = data;
-        console.log('✅ Teams loaded:', data);
+        console.log('Teams loaded:', data);
       },
-      error: (err) => console.error('❌ Error loading teams:', err)
+      error: (err) => console.error(' Error loading teams:', err)
     });
   }
 
   loadAllUsers(): void {
     this.http.get<UserResponseDto[]>('http://localhost:8080/users', { withCredentials: true }).subscribe({
       next: (data) => {
-        console.log('✅ Users loaded:', data);
+        console.log('Users loaded:', data);
         this.allUsers = data;
       },
-      error: (err) => console.error('❌ Error loading users:', err)
+      error: (err) => console.error('Error loading users:', err)
     });
   }
 
@@ -108,11 +108,11 @@ export class Teams implements OnInit {
 
     this.teamService.createTeam(teamRequest).subscribe({
       next: (team) => {
-        console.log('✅ Team created successfully:', team);
+        console.log('Team created successfully:', team);
         this.teams.push(team);
         this.closeModal();
       },
-      error: (err) => console.error('❌ Error creating team:', err)
+      error: (err) => console.error('Error creating team:', err)
     });
   }
 
@@ -129,36 +129,44 @@ export class Teams implements OnInit {
         this.teams = this.teams.filter(t => t.id !== teamId);
         console.log(`🗑 Team ${teamId} deleted`);
       },
-      error: (err) => console.error('❌ Error deleting team:', err)
+      error: (err) => console.error('Error deleting team:', err)
     });
   }
 
-  updateTeam(team: TeamResponseDto): void {
-    if (!this.isAdmin) {
-      alert('Only admins can edit teams.');
-      return;
-    }
-
-    const newName = prompt('Enter new team name:', team.name);
-    const newDesc = prompt('Enter new team description:', team.description);
-
-    if (newName && newDesc) {
-      const updatedTeam: TeamRequestDto = {
-        name: newName.trim(),
-        description: newDesc.trim(),
-        company: team.company.id
-      };
-
-      this.teamService.updateTeam(team.id, updatedTeam).subscribe({
-        next: (updated) => {
-          const index = this.teams.findIndex(t => t.id === updated.id);
-          if (index !== -1) this.teams[index] = updated;
-          console.log('✏️ Team updated successfully:', updated);
-        },
-        error: (err) => console.error('❌ Error updating team:', err)
-      });
-    }
+updateTeam(team: TeamResponseDto): void {
+  if (!this.isAdmin) {
+    alert('Only admins can edit teams.');
+    return;
   }
+
+
+  if (!team.users || team.users.length === 0) {
+    alert('A team must have at least one member before editing.');
+    return;
+  }
+
+  const newName = prompt('Enter new team name:', team.name);
+  const newDesc = prompt('Enter new team description:', team.description);
+
+  if (newName && newDesc) {
+    const updatedTeam: TeamRequestDto = {
+      name: newName.trim(),
+      description: newDesc.trim(),
+      company: team.company.id,
+
+      userIds: team.users.map(u => u.id)
+    };
+
+    this.teamService.updateTeam(team.id, updatedTeam).subscribe({
+      next: (updated) => {
+        const index = this.teams.findIndex(t => t.id === updated.id);
+        if (index !== -1) this.teams[index] = updated;
+        console.log('Team updated successfully:', updated);
+      },
+      error: (err) => console.error('Error updating team:', err)
+    });
+  }
+}
 }
 
 

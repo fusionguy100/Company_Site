@@ -14,7 +14,6 @@
 
       <p class="team-description">{{ team.description }}</p>
 
-
       <div class="members-section">
         <h3>Members</h3>
         <div class="member-tags">
@@ -24,9 +23,8 @@
         </div>
       </div>
 
-
       <div *ngIf="isAdmin" class="team-actions">
-        <button class="edit-btn" (click)="updateTeam(team)">✏️ Edit</button>
+        <button class="edit-btn" (click)="updateTeam(team)"> Edit</button>
         <button class="delete-btn" (click)="deleteTeam(team.id)">🗑 Delete</button>
       </div>
     </div>
@@ -60,7 +58,9 @@
         <div class="add-member-row">
           <select [(ngModel)]="selectedUserId">
             <option value="">Pick a user</option>
-            <option *ngFor="let user of allUsers" [value]="user.id">{{ user.username }}</option>
+            <option *ngFor="let user of allUsers" [value]="user.id">
+              {{ user.username }}
+            </option>
           </select>
           <button class="add-btn" (click)="addMember()">Add</button>
         </div>
@@ -73,7 +73,14 @@
         </div>
       </div>
 
-      <button class="submit-btn" (click)="submitTeam()">Submit</button>
+      <button
+        class="submit-btn"
+        (click)="submitTeam()"
+        [disabled]="selectedMembers.length === 0 || !newTeam.name.trim()"
+        title="You must add at least one member"
+      >
+        Submit
+      </button>
     </div>
   </div>
 </div>
