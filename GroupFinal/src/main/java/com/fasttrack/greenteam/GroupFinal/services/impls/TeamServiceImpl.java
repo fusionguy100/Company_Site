@@ -202,4 +202,17 @@ public class TeamServiceImpl implements TeamService {
         return true;
     }
 
+    @Override
+    public void deleteTeam(Long teamId) {
+        if (teamId == null) {
+            throw new BadRequestException("Team ID cannot be null!");
+        }
+
+        Team team = teamRepository.findById(teamId)
+                .orElseThrow(() -> new NotFoundException("Team not found with this ID!"));
+
+        teamRepository.delete(team);
+    }
+
+
 }

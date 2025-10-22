@@ -7,6 +7,7 @@ import com.fasttrack.greenteam.GroupFinal.exceptions.NotFoundException;
 import com.fasttrack.greenteam.GroupFinal.repositories.UserRepository;
 import com.fasttrack.greenteam.GroupFinal.services.TeamService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.servlet.http.HttpSession;
@@ -41,7 +42,6 @@ public class TeamController {
         return teamService.createTeam(userId, teamRequestDto);
     }
 
-    // ✅Only admin can add users
     @PostMapping("/{teamId}/users/{userId}")
     public TeamResponseDto addUserToTeam(@PathVariable Long teamId,
                                          @PathVariable Long userId,
@@ -77,20 +77,47 @@ public class TeamController {
 
     // Only admin can update a team
     @PatchMapping("/{teamId}")
-    public TeamResponseDto updateTeam(@PathVariable Long teamId,
-                                      @RequestBody TeamRequestDto teamRequestDto,
-                                      HttpSession session) {
+    public TeamResponseDto updateTeam(
+            @PathVariable Long teamId,
+            @RequestBody TeamRequestDto teamRequestDto,
+            HttpSession session) {
+
         Long currentUserId = (Long) session.getAttribute("userId");
-        if (currentUserId == null) throw new NotAuthorizedException("You must be logged in");
+        if (currentUserId == null) {
+            throw new NotAuthorizedException("You must be logged in!");
+        }
 
         User currentUser = userRepository.findById(currentUserId)
-                .orElseThrow(() -> new NotFoundException("User not found"));
+                .orElseThrow(() -> new NotFoundException("User not found!"));
 
-        if (!currentUser.getAdmin())
+        if (!Boolean.TRUE.equals(currentUser.getAdmin())) {
             throw new NotAuthorizedException("Only admins can update teams!");
+        }
 
         return teamService.updateTeam(teamId, teamRequestDto);
     }
+
+    @DeleteMapping("/{teamId}")
+    public ResponseEntity<Void> deleteTeam(
+            @PathVariable Long teamId,
+            HttpSession session) {
+
+        Long currentUserId = (Long) session.getAttribute("userId");
+        if (currentUserId == null) {
+            throw new NotAuthorizedException("You must be logged in!");
+        }
+
+        User currentUser = userRepository.findById(currentUserId)
+                .orElseThrow(() -> new NotFoundException("User not found!"));
+
+        if (!Boolean.TRUE.equals(currentUser.getAdmin())) {
+            throw new NotAuthorizedException("Only admins can delete teams!");
+        }
+
+        teamService.deleteTeam(teamId);
+        return ResponseEntity.noContent().build();
+    }
+
 
     //  Open endpoints (no restrictions)
     @GetMapping("/{id}")
