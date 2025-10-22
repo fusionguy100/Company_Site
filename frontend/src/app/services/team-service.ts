@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-
 @Injectable({
   providedIn: 'root'
 })
@@ -11,43 +10,39 @@ export class TeamService {
 
   constructor(private http: HttpClient) {}
 
-
   getAllTeams(): Observable<TeamResponseDto[]> {
     return this.http.get<TeamResponseDto[]>(this.apiUrl, { withCredentials: true });
   }
+
 
   getTeamById(teamId: number): Observable<TeamResponseDto> {
     return this.http.get<TeamResponseDto>(`${this.apiUrl}/${teamId}`, { withCredentials: true });
   }
 
-  createTeam(userId: number, teamRequest: TeamRequestDto): Observable<TeamResponseDto> {
+  createTeam(teamRequest: TeamRequestDto): Observable<TeamResponseDto> {
     return this.http.post<TeamResponseDto>(
-      `${this.apiUrl}?userId=${userId}`,
+      this.apiUrl,
       teamRequest,
       { withCredentials: true }
     );
   }
 
-
-  updateTeam(teamId: number, currentUserId: number, teamRequest: Partial<TeamRequestDto>): Observable<TeamResponseDto> {
+  updateTeam(teamId: number, team: TeamRequestDto): Observable<TeamResponseDto> {
     return this.http.patch<TeamResponseDto>(
-      `${this.apiUrl}/${teamId}?currentUserId=${currentUserId}`,
-      teamRequest,
+      `${this.apiUrl}/${teamId}`,
+      team,
       { withCredentials: true }
     );
   }
 
-
-  addUserToTeam(teamId: number, userId: number, currentUserId: number): Observable<TeamResponseDto> {
-    // Backend expects both userId and currentUserId as query params
+  addUserToTeam(teamId: number, userId: number): Observable<TeamResponseDto> {
     return this.http.post<TeamResponseDto>(
-      `${this.apiUrl}/${teamId}/users/${userId}?currentUserId=${currentUserId}`,
+      `${this.apiUrl}/${teamId}/users/${userId}`,
       {},
       { withCredentials: true }
     );
   }
 
-  /** Remove a user from a team (admin only) */
   removeUserFromTeam(teamId: number, userId: number): Observable<UserResponseDto> {
     return this.http.delete<UserResponseDto>(
       `${this.apiUrl}/${teamId}/users/${userId}`,

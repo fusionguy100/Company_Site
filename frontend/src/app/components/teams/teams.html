@@ -1,4 +1,5 @@
 <app-navbar></app-navbar>
+
 <div class="teams-page">
   <h1 class="page-title">Teams</h1>
 
@@ -6,22 +7,37 @@
     <div *ngFor="let team of teams" class="team-card">
       <div class="team-header">
         <h2>{{ team.name }}</h2>
-        <span class="project-count"># of Projects: {{ team.projects?.length || 0 }}</span>
+        <span class="project-count">
+          # of Projects: {{ team.projects?.length || 0 }}
+        </span>
       </div>
+
+      <p class="team-description">{{ team.description }}</p>
+
 
       <div class="members-section">
         <h3>Members</h3>
         <div class="member-tags">
-          <span *ngFor="let user of team.users" class="member-pill">{{ user.username }}</span>
+          <span *ngFor="let user of team.users" class="member-pill">
+            {{ user.username }}
+          </span>
         </div>
+      </div>
+
+
+      <div *ngIf="isAdmin" class="team-actions">
+        <button class="edit-btn" (click)="updateTeam(team)">✏️ Edit</button>
+        <button class="delete-btn" (click)="deleteTeam(team.id)">🗑 Delete</button>
       </div>
     </div>
 
-    <div class="new-team-card" (click)="openModal()">
+
+    <div *ngIf="isAdmin" class="new-team-card" (click)="openModal()">
       <div class="plus-sign">+</div>
       <div>New Team</div>
     </div>
   </div>
+
 
   <div class="modal-overlay" *ngIf="showModal">
     <div class="create-team-modal">
@@ -30,21 +46,24 @@
 
       <div class="input-group">
         <label>Team Name</label>
-        <input [(ngModel)]="newTeam.name" />
+        <input [(ngModel)]="newTeam.name" placeholder="Enter team name" />
       </div>
 
       <div class="input-group">
         <label>Description</label>
-        <input [(ngModel)]="newTeam.description" />
+        <input [(ngModel)]="newTeam.description" placeholder="Enter description" />
       </div>
 
       <div class="members-section">
-        <h3>Select Members</h3>
-        <select [(ngModel)]="selectedUserId">
-          <option value="">Pick an option</option>
-          <option *ngFor="let user of allUsers" [value]="user.id">{{ user.username }}</option>
-        </select>
-        <button (click)="addMember()">Add</button>
+        <h3>Add Members</h3>
+
+        <div class="add-member-row">
+          <select [(ngModel)]="selectedUserId">
+            <option value="">Pick a user</option>
+            <option *ngFor="let user of allUsers" [value]="user.id">{{ user.username }}</option>
+          </select>
+          <button class="add-btn" (click)="addMember()">Add</button>
+        </div>
 
         <div class="member-tags">
           <div *ngFor="let member of selectedMembers" class="member-pill">
