@@ -41,11 +41,14 @@ export class Teams implements OnInit {
   }
 
   loadAllUsers(): void {
-    this.http.get<UserResponseDto[]>('http://localhost:8080/users').subscribe({
-      next: (data) => (this.allUsers = data),
-      error: (err) => console.error('Error loading users:', err)
-    });
-  }
+  this.http.get<UserResponseDto[]>('http://localhost:8080/users').subscribe({
+    next: (data) => {
+      console.log('✅ Users loaded:', data);
+      this.allUsers = data;
+    },
+    error: (err) => console.error('Error loading users:', err)
+  });
+}
 
   openModal(): void {
     this.showModal = true;
