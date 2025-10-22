@@ -1,0 +1,32 @@
+<app-navbar></app-navbar>
+<div class ="page-container">
+
+  <!-- Page Title -->
+  <h1 class="page-title">Teams</h1>
+
+
+  <div class="teams-grid">
+
+    <div class="team-card" *ngFor="let team of teams">
+      <h2 class="team-name">{{ team.name }}</h2>
+      <p class="project-count"># of Projects: {{ team.projects?.length }}</p>
+
+      <div class="members-section">
+        <h3>Members:</h3>
+        <div class="members-list">
+          <span class="member-chip" *ngFor="let user of team.users">
+            {{ user.first }} {{ user.last }}
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="new-team-card" (click)="createNewTeam()">
+      <div class="plus-icon">+</div>
+      <p>New Team</p>
+    </div>
+  </div>
+</div>
+
+
+
