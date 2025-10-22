@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 
 import com.fasttrack.greenteam.GroupFinal.dtos.CompanyRequestDto;
 import com.fasttrack.greenteam.GroupFinal.dtos.CompanyResponseDto;
+import com.fasttrack.greenteam.GroupFinal.dtos.UserResponseDto;
 import com.fasttrack.greenteam.GroupFinal.services.CompanyService;
 
 @RestController
@@ -22,14 +23,14 @@ public class CompanyController {
         return companyService.getCompanies();
     }
 
-    @PostMapping
-    public CompanyResponseDto createCompany(@RequestBody CompanyRequestDto companyRequestDto) {
-        return companyService.createCompany(companyRequestDto);
-    }
-
     @GetMapping("/{id}")
     public CompanyResponseDto getCompany(@PathVariable Long id) {
         return companyService.getCompany(id);
+    }
+
+    @PostMapping
+    public CompanyResponseDto createCompany(@RequestBody CompanyRequestDto companyRequestDto) {
+        return companyService.createCompany(companyRequestDto);
     }
 
     @PatchMapping("/{id}")
@@ -41,4 +42,20 @@ public class CompanyController {
     public CompanyResponseDto deleteCompany(@PathVariable Long id) {
         return companyService.deleteCompany(id);
     }
+
+    @GetMapping("/{id}/users")
+public List<UserResponseDto> getUsersByCompany(@PathVariable Long id) {
+    return companyService.getUsersByCompany(id);
+}
+
+@PostMapping("/{id}/users")
+public UserResponseDto addUserToCompany(@PathVariable Long id, @RequestParam Long userId) {
+    return companyService.addUserToCompany(id, userId);
+}
+
+@DeleteMapping("/{id}/users/{userId}")
+public UserResponseDto removeUserFromCompany(@PathVariable Long id, @PathVariable Long userId) {
+    return companyService.removeUserFromCompany(id, userId);
+}
+
 }
