@@ -23,6 +23,7 @@ import lombok.RequiredArgsConstructor;
 import org.hibernate.annotations.NotFound;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -165,22 +166,29 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
+    @Transactional
     public TeamResponseDto updateTeam(Long teamId, TeamRequestDto teamRequestDto) {
         if (teamId == null) {
             throw new BadRequestException("Team ID cannot be null!");
         }
         Team team = teamRepository.findById(teamId)
-                .orElseThrow(() ->new NotFoundException("Team not found with this ID!"));
+                .orElseThrow(() -> new NotFoundException("Team not found with this ID!"));
 
         boolean updated = false;
 
         if (teamRequestDto.getName() != null && !teamRequestDto.getName().isBlank()) {
-            team.setName(teamRequestDto.getName());
+            team.setName(teamRequestDto.getName().trim());
             updated = true;
         }
 
         if (teamRequestDto.getDescription() != null && !teamRequestDto.getDescription().isBlank()) {
-            team.setDescription(teamRequestDto.getDescription());
+            team.setDescription(teamRequestDto.getDescription().trim());
+            updated = true;
+        }
+
+        if (teamRequestDto.getUserIds() != null) {
+            List<User> updatedUsers = userRepository.findAllById(teamRequestDto.getUserIds());
+            team.setUsers(updatedUsers);
             updated = true;
         }
 
@@ -193,8 +201,7 @@ public class TeamServiceImpl implements TeamService {
 
     }
 
-
-    //helper method
+        //helper method
     public boolean validateTeam(TeamRequestDto teamRequestDto) {
         if (teamRequestDto == null ) throw new BadRequestException("Team needs to be non empty!");
         if (teamRequestDto.getName().isEmpty() || teamRequestDto.getName().isBlank()) throw new BadRequestException("Team needs to have a name!");
@@ -203,16 +210,33 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
-    public void deleteTeam(Long teamId) {
-        if (teamId == null) {
-            throw new BadRequestException("Team ID cannot be null!");
+    @Transactional
+    public void deleteTeam(Long teamId, Long userId) {
+        User currentUser = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException("User not found"));
+
+        if (!currentUser.getAdmin()) {
+            throw new NotAuthorizedException("Only admins can delete teams!");
         }
 
         Team team = teamRepository.findById(teamId)
-                .orElseThrow(() -> new NotFoundException("Team not found with this ID!"));
+                .orElseThrow(() -> new NotFoundException("Team not found"));
 
+
+        for (User user : team.getUsers()) {
+            user.getTeams().remove(team);
+        }
+        team.getUsers().clear();
+
+
+        if (team.getProjects() != null) {
+            team.getProjects().forEach(project -> project.setTeam(null));
+        }
+
+        teamRepository.saveAndFlush(team);
         teamRepository.delete(team);
     }
+
 
 
 }

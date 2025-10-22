@@ -98,28 +98,17 @@ public class TeamController {
     }
 
     @DeleteMapping("/{teamId}")
-    public ResponseEntity<Void> deleteTeam(
-            @PathVariable Long teamId,
-            HttpSession session) {
-
-        Long currentUserId = (Long) session.getAttribute("userId");
-        if (currentUserId == null) {
-            throw new NotAuthorizedException("You must be logged in!");
+    public ResponseEntity<Void> deleteTeam(@PathVariable Long teamId, HttpSession session) {
+        Long userId = (Long) session.getAttribute("userId");
+        if (userId == null) {
+            throw new NotAuthorizedException("You must be logged in");
         }
 
-        User currentUser = userRepository.findById(currentUserId)
-                .orElseThrow(() -> new NotFoundException("User not found!"));
-
-        if (!Boolean.TRUE.equals(currentUser.getAdmin())) {
-            throw new NotAuthorizedException("Only admins can delete teams!");
-        }
-
-        teamService.deleteTeam(teamId);
+        teamService.deleteTeam(teamId, userId);
         return ResponseEntity.noContent().build();
     }
 
 
-    //  Open endpoints (no restrictions)
     @GetMapping("/{id}")
     public TeamResponseDto getTeamById(@PathVariable Long id) {
         return teamService.getTeamByID(id);
