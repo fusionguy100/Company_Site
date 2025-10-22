@@ -2,10 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-/**
- * TeamService — handles all HTTP requests to the /teams backend endpoints.
- * Includes { withCredentials: true } for session-based authentication using HttpSession.
- */
+
 @Injectable({
   providedIn: 'root'
 })
@@ -68,13 +65,18 @@ export class TeamService {
 export interface TeamRequestDto {
   name: string;
   description: string;
-  company: number; // company ID
+  company: number;
 }
 
 export interface CompanyResponseDto {
   id: number;
   name: string;
   description: string;
+}
+
+export interface UserSummaryDto {
+  id: number;
+  username: string;
 }
 
 export interface UserResponseDto {
@@ -97,6 +99,6 @@ export interface TeamResponseDto {
   name: string;
   description: string;
   company: CompanyResponseDto;
-  users: UserResponseDto[];
+  users: UserSummaryDto[];
   projects: ProjectResponseDto[];
 }

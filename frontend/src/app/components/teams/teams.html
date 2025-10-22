@@ -1,32 +1,60 @@
 <app-navbar></app-navbar>
-<div class ="page-container">
-
-  <!-- Page Title -->
+<div class="teams-page">
   <h1 class="page-title">Teams</h1>
 
-
   <div class="teams-grid">
-
-    <div class="team-card" *ngFor="let team of teams">
-      <h2 class="team-name">{{ team.name }}</h2>
-      <p class="project-count"># of Projects: {{ team.projects?.length }}</p>
+    <div *ngFor="let team of teams" class="team-card">
+      <div class="team-header">
+        <h2>{{ team.name }}</h2>
+        <span class="project-count"># of Projects: {{ team.projects?.length || 0 }}</span>
+      </div>
 
       <div class="members-section">
-        <h3>Members:</h3>
-        <div class="members-list">
-          <span class="member-chip" *ngFor="let user of team.users">
-            {{ user.first }} {{ user.last }}
-          </span>
+        <h3>Members</h3>
+        <div class="member-tags">
+          <span *ngFor="let user of team.users" class="member-pill">{{ user.username }}</span>
         </div>
       </div>
     </div>
 
-    <div class="new-team-card" (click)="createNewTeam()">
-      <div class="plus-icon">+</div>
-      <p>New Team</p>
+    <div class="new-team-card" (click)="openModal()">
+      <div class="plus-sign">+</div>
+      <div>New Team</div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" *ngIf="showModal">
+    <div class="create-team-modal">
+      <button class="close-btn" (click)="closeModal()">✖</button>
+      <h2>Create Team</h2>
+
+      <div class="input-group">
+        <label>Team Name</label>
+        <input [(ngModel)]="newTeam.name" />
+      </div>
+
+      <div class="input-group">
+        <label>Description</label>
+        <input [(ngModel)]="newTeam.description" />
+      </div>
+
+      <div class="members-section">
+        <h3>Select Members</h3>
+        <select [(ngModel)]="selectedUserId">
+          <option value="">Pick an option</option>
+          <option *ngFor="let user of allUsers" [value]="user.id">{{ user.username }}</option>
+        </select>
+        <button (click)="addMember()">Add</button>
+
+        <div class="member-tags">
+          <div *ngFor="let member of selectedMembers" class="member-pill">
+            {{ member.username }}
+            <button class="remove-btn" (click)="removeMember(member)">✖</button>
+          </div>
+        </div>
+      </div>
+
+      <button class="submit-btn" (click)="submitTeam()">Submit</button>
     </div>
   </div>
 </div>
-
-
-
