@@ -45,29 +45,38 @@ public class CompanyServiceImpl implements CompanyService {
         return companyMapper.entityToDto(saved);
     }
 
-    @Override
-    public CompanyResponseDto updateCompany(CompanyRequestDto companyRequestDto, Long id) {
-        Optional<Company> optionalCompany = companyRepository.findById(id);
+@Override
+public CompanyResponseDto updateCompany(CompanyRequestDto companyRequestDto, Long id) {
+    Optional<Company> optionalCompany = companyRepository.findById(id);
 
-        if (optionalCompany.isPresent()) {
-            Company company = optionalCompany.get();
+    if (optionalCompany.isPresent()) {
+        Company company = optionalCompany.get();
 
-            if (companyRequestDto.getName() != null) {
-                company.setName(companyRequestDto.getName());
-            }
-            if (companyRequestDto.getIndustry() != null) {
-                company.setIndustry(companyRequestDto.getIndustry());
-            }
-            if (companyRequestDto.getLocation() != null) {
-                company.setLocation(companyRequestDto.getLocation());
-            }
-
-            Company updated = companyRepository.save(company);
-            return companyMapper.entityToDto(updated);
-        } else {
-            throw new NotFoundException("Company not found with id: " + id);
+        if (companyRequestDto.getName() != null) {
+            company.setName(companyRequestDto.getName());
         }
+        if (companyRequestDto.getIndustry() != null) {
+            company.setIndustry(companyRequestDto.getIndustry());
+        }
+        if (companyRequestDto.getLocation() != null) {
+            company.setLocation(companyRequestDto.getLocation());
+        }
+        if (companyRequestDto.getDescription() != null) {
+            company.setDescription(companyRequestDto.getDescription());
+        }
+        if (companyRequestDto.getWebsite() != null) {
+            company.setWebsite(companyRequestDto.getWebsite());
+        }
+        if (companyRequestDto.getContactEmail() != null) {
+            company.setContactEmail(companyRequestDto.getContactEmail());
+        }
+        Company updated = companyRepository.save(company);
+        return companyMapper.entityToDto(updated);
+    } else {
+        throw new NotFoundException("Company not found with id: " + id);
     }
+}
+
 
     @Override
     public CompanyResponseDto deleteCompany(Long id) {
