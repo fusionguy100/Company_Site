@@ -171,24 +171,28 @@ public class TeamServiceImpl implements TeamService {
         if (teamId == null) {
             throw new BadRequestException("Team ID cannot be null!");
         }
+
         Team team = teamRepository.findById(teamId)
                 .orElseThrow(() -> new NotFoundException("Team not found with this ID!"));
 
         boolean updated = false;
 
         if (teamRequestDto.getName() != null && !teamRequestDto.getName().isBlank()) {
-            team.setName(teamRequestDto.getName().trim());
+            team.setName(teamRequestDto.getName());
             updated = true;
         }
 
         if (teamRequestDto.getDescription() != null && !teamRequestDto.getDescription().isBlank()) {
-            team.setDescription(teamRequestDto.getDescription().trim());
+            team.setDescription(teamRequestDto.getDescription());
             updated = true;
         }
 
         if (teamRequestDto.getUserIds() != null) {
-            List<User> updatedUsers = userRepository.findAllById(teamRequestDto.getUserIds());
-            team.setUsers(updatedUsers);
+            List<User> users = userRepository.findAllById(teamRequestDto.getUserIds());
+            if (users.isEmpty()) {
+                throw new BadRequestException("A team must have at least one member!");
+            }
+            team.setUsers(users);
             updated = true;
         }
 
@@ -198,10 +202,11 @@ public class TeamServiceImpl implements TeamService {
 
         Team savedTeam = teamRepository.saveAndFlush(team);
         return teamMapper.entityToDto(savedTeam);
-
     }
 
-        //helper method
+
+
+    //helper method
     public boolean validateTeam(TeamRequestDto teamRequestDto) {
         if (teamRequestDto == null ) throw new BadRequestException("Team needs to be non empty!");
         if (teamRequestDto.getName().isEmpty() || teamRequestDto.getName().isBlank()) throw new BadRequestException("Team needs to have a name!");
