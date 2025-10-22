@@ -43,7 +43,7 @@ public class TeamController {
     }
 
     @GetMapping("/{teamId}/projects")
-    public List<ProjectResponseDto> getallProjects (@PathVariable Long teamId) {
+    public List<ProjectResponseDto> getAllProjects (@PathVariable Long teamId) {
         return teamService.getAllProjects(teamId);
     }
 
@@ -52,7 +52,7 @@ public class TeamController {
         return teamService.getAllUsers(teamId);
     }
 
-    @PatchMapping("/{id}")
+    @PatchMapping("/teamId}")
     public TeamResponseDto updateTeam(@PathVariable Long teamId, @RequestBody TeamRequestDto teamRequestDto) {
         return teamService.updateTeam(teamId, teamRequestDto);
     }
