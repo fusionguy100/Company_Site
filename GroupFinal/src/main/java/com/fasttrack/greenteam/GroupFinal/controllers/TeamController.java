@@ -52,7 +52,7 @@ public class TeamController {
         return teamService.getAllUsers(teamId);
     }
 
-    @PatchMapping("/teamId}")
+    @PatchMapping("/{teamId}")
     public TeamResponseDto updateTeam(@PathVariable Long teamId, @RequestBody TeamRequestDto teamRequestDto) {
         return teamService.updateTeam(teamId, teamRequestDto);
     }
