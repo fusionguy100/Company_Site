@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -15,7 +16,7 @@ public class AnnouncementResponseDto {
     private Long id;
     private Timestamp date;
     private String title;
-    private String message;
-    private CompanyResponseDto company;
-    private UserResponseDto author;
+    private String content;
+    private CompanySummaryDto company;
+    private UserSummaryDto author;
 }

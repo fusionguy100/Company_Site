@@ -1,7 +1,9 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { CompanyStateService, Company } from '../../services/company-state.service';
+import { CompanyStateService } from '../../services/company-state.service';
 import { Navbar } from '../navbar/navbar';
+import { Company } from '../../models/company.model';
 
 @Component({
   selector: 'app-announcements',
@@ -13,7 +15,7 @@ import { Navbar } from '../navbar/navbar';
 export class Announcements implements OnInit {
   company: Company | null = null;
 
-  constructor(private companyState: CompanyStateService) {}
+  constructor(private companyState: CompanyStateService, private http: HttpClient) {}
 
   ngOnInit(): void {
     // Get the currently selected company

@@ -3,8 +3,9 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { CompanyStateService, Company } from '../../services/company-state.service';
+import { CompanyStateService } from '../../services/company-state.service';
 import { Navbar } from '../navbar/navbar';
+import { Company } from '../../models/company.model';
 
 @Component({
   selector: 'app-select-company',

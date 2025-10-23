@@ -15,7 +15,7 @@ public class UserResponseDto {
     private boolean active;
     private boolean admin;
     private String status;
-    private List<TeamResponseDto> teams;
-    private List<CompanyResponseDto> companies;
-    private List<AnnouncementResponseDto> announcements;
+    private List<TeamSummaryDto> teams;
+    private List<CompanySummaryDto> companies;
+    private List<AnnouncementSummaryDto> announcements;
 }

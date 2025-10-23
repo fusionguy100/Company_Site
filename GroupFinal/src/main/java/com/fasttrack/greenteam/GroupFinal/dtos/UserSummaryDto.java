@@ -8,4 +8,8 @@ import lombok.NoArgsConstructor;
 public class UserSummaryDto {
     private Long id;
     private String username;
+    private String firstName;
+    private String lastName;
+    private Boolean admin;
+    private Boolean active;
 }

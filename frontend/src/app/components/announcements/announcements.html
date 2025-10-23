@@ -4,6 +4,17 @@
 
   <div *ngIf="company; else noCompany">
     <p>Selected company: {{ company.name }}</p>
+    @if (company.announcements) { @for (announcement of company.announcements;
+    track announcement.id) {
+    <div class="announcement-card">
+      <h2>{{ announcement.title }}</h2>
+      <p>{{ announcement.content }}</p>
+      <p class="announcement-meta">
+        Posted by {{ announcement.authorUsername }} on
+        {{ announcement.date | date : "medium" }}
+      </p>
+    </div>
+    } }
   </div>
 
   <ng-template #noCompany>

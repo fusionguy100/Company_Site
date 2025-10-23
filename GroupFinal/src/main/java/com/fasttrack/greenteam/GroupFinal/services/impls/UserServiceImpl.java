@@ -61,6 +61,10 @@ public class UserServiceImpl implements UserService {
             throw new BadRequestException("Username already exists");
         }
         User user = this.userMapper.dtoToEntity(userRequestDto);
+
+        System.out.println("Creating user: " + user);
+
+        System.out.println("User Admin: " + user.getActive());
         user.setActive(Boolean.FALSE);
         user.setStatus("PENDING");
         User savedUser = this.userRepository.save(user);
