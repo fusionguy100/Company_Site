@@ -18,7 +18,7 @@ public interface AnnouncementMapper {
     @Mapping(target = "company", source="company", qualifiedByName = "mapCompanyToSummary")
     @Mapping(target = "author", source="author", qualifiedByName = "mapUserToSummary")
     AnnouncementResponseDto entityToDto(Announcement announcement);
-    List<AnnouncementResponseDto> entityToDtos(List<Announcement> announcements);
+    List<AnnouncementResponseDto> entitiesToDtos(List<Announcement> announcements);
     @Mapping(target="company", ignore = true)
     Announcement dtoToEntity(AnnouncementRequestDto announcementRequestDto);
 
