@@ -2,10 +2,7 @@ package com.fasttrack.greenteam.GroupFinal.services;
 
 import java.util.List;
 
-import com.fasttrack.greenteam.GroupFinal.dtos.AnnouncementResponseDto;
-import com.fasttrack.greenteam.GroupFinal.dtos.CompanyRequestDto;
-import com.fasttrack.greenteam.GroupFinal.dtos.CompanyResponseDto;
-import com.fasttrack.greenteam.GroupFinal.dtos.UserResponseDto;
+import com.fasttrack.greenteam.GroupFinal.dtos.*;
 
 public interface CompanyService {
 
@@ -26,4 +23,6 @@ public interface CompanyService {
     UserResponseDto removeUserFromCompany(Long companyId, Long userId);
 
     List<AnnouncementResponseDto> listAnnouncements(Long id);
+
+    List<TeamResponseDto> getTeamsByCompany(Long id);
 }

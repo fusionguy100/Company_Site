@@ -4,16 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import com.fasttrack.greenteam.GroupFinal.dtos.AnnouncementResponseDto;
+import com.fasttrack.greenteam.GroupFinal.dtos.*;
 import com.fasttrack.greenteam.GroupFinal.mappers.AnnouncementMapper;
+import com.fasttrack.greenteam.GroupFinal.mappers.TeamMapper;
 import com.fasttrack.greenteam.GroupFinal.repositories.AnnouncementRepository;
+import com.fasttrack.greenteam.GroupFinal.repositories.TeamRepository;
 import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
 
 import com.fasttrack.greenteam.GroupFinal.exceptions.NotFoundException;
-import com.fasttrack.greenteam.GroupFinal.dtos.CompanyRequestDto;
-import com.fasttrack.greenteam.GroupFinal.dtos.CompanyResponseDto;
-import com.fasttrack.greenteam.GroupFinal.dtos.UserResponseDto;
 import com.fasttrack.greenteam.GroupFinal.entities.Company;
 import com.fasttrack.greenteam.GroupFinal.entities.User;
 import com.fasttrack.greenteam.GroupFinal.mappers.CompanyMapper;
@@ -32,6 +31,8 @@ public class CompanyServiceImpl implements CompanyService {
     private final UserMapper userMapper;
     private final AnnouncementRepository announcementRepository;
     private final AnnouncementMapper announcementMapper;
+    private final TeamRepository teamRepository;
+    private final TeamMapper teamMapper;
 
     @Override
     public List<CompanyResponseDto> getCompanies() {
@@ -184,4 +185,14 @@ public UserResponseDto removeUserFromCompany(Long companyId, Long userId) {
     public List<AnnouncementResponseDto> listAnnouncements(Long id) {
         return announcementMapper.entitiesToDtos(announcementRepository.findByCompanyId(id));
     }
+
+    public List<TeamResponseDto> getTeamsByCompany(Long companyId) {
+        return teamRepository.findByCompanyId(companyId)
+                .stream()
+                .map(teamMapper::entityToDto)
+                .toList();
+    }
+
+
+
 }

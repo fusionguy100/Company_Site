@@ -2,14 +2,11 @@ package com.fasttrack.greenteam.GroupFinal.controllers;
 
 import java.util.List;
 
-import com.fasttrack.greenteam.GroupFinal.dtos.AnnouncementResponseDto;
+import com.fasttrack.greenteam.GroupFinal.dtos.*;
 import org.springframework.web.bind.annotation.*;
 
 import lombok.AllArgsConstructor;
 
-import com.fasttrack.greenteam.GroupFinal.dtos.CompanyRequestDto;
-import com.fasttrack.greenteam.GroupFinal.dtos.CompanyResponseDto;
-import com.fasttrack.greenteam.GroupFinal.dtos.UserResponseDto;
 import com.fasttrack.greenteam.GroupFinal.services.CompanyService;
 
 @RestController
@@ -62,4 +59,11 @@ public UserResponseDto removeUserFromCompany(@PathVariable Long id, @PathVariabl
     @GetMapping("/{id}/announcements")
     public List<AnnouncementResponseDto> listAnnouncements(@PathVariable Long id) { return companyService.listAnnouncements(id); }
 
+    @GetMapping("/{id}/teams")
+    public List<TeamResponseDto> getTeamsByCompany(@PathVariable Long id) {
+        return companyService.getTeamsByCompany(id);
+    }
+
 }
+
+
