@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping()
+@RequestMapping("/auth")
 @CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true")
 public class LoginController {
 
