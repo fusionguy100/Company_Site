@@ -5,6 +5,7 @@ import com.fasttrack.greenteam.GroupFinal.dtos.ProjectResponseDto;
 import com.fasttrack.greenteam.GroupFinal.dtos.TeamRequestDto;
 import com.fasttrack.greenteam.GroupFinal.dtos.TeamResponseDto;
 import com.fasttrack.greenteam.GroupFinal.dtos.UserResponseDto;
+import com.fasttrack.greenteam.GroupFinal.entities.Company;
 import com.fasttrack.greenteam.GroupFinal.entities.Project;
 import com.fasttrack.greenteam.GroupFinal.entities.Team;
 import com.fasttrack.greenteam.GroupFinal.entities.User;
@@ -14,6 +15,7 @@ import com.fasttrack.greenteam.GroupFinal.exceptions.NotFoundException;
 import com.fasttrack.greenteam.GroupFinal.mappers.ProjectMapper;
 import com.fasttrack.greenteam.GroupFinal.mappers.TeamMapper;
 import com.fasttrack.greenteam.GroupFinal.mappers.UserMapper;
+import com.fasttrack.greenteam.GroupFinal.repositories.CompanyRepository;
 import com.fasttrack.greenteam.GroupFinal.repositories.TeamRepository;
 import com.fasttrack.greenteam.GroupFinal.repositories.UserRepository;
 import com.fasttrack.greenteam.GroupFinal.services.TeamService;
@@ -21,6 +23,7 @@ import lombok.RequiredArgsConstructor;
 import org.hibernate.annotations.NotFound;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +37,7 @@ public class TeamServiceImpl implements TeamService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final ProjectMapper projectMapper;
+    private final CompanyRepository companyRepository;
 
     @Override
     public List<TeamResponseDto> getTeams() {
@@ -42,18 +46,30 @@ public class TeamServiceImpl implements TeamService {
 
     @Override
     public TeamResponseDto createTeam(Long userId, TeamRequestDto teamRequestDto) {
-        //for now without Spring Security
-        User user = userRepository.findById(userId).orElseThrow(() -> new NotFoundException("User not found!"));
-        if(!user.getAdmin()) {
-            throw new NotAuthorizedException("Only an admin can create a new teams!");
-        }
-        validateTeam(teamRequestDto);
 
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException("User not found!"));
+
+        validateTeam(teamRequestDto);
         Team team = teamMapper.dtoToEntity(teamRequestDto);
+
+        Company company = companyRepository.findById(teamRequestDto.getCompany())
+                .orElseThrow(() -> new NotFoundException("Company not found!"));
+        team.setCompany(company);
+
+
+        if (teamRequestDto.getUserIds() != null && !teamRequestDto.getUserIds().isEmpty()) {
+            List<User> users = userRepository.findAllById(teamRequestDto.getUserIds());
+            for (User member : users) {
+                member.getTeams().add(team);
+            }
+            team.setUsers(users);
+        }
+
         Team savedTeam = teamRepository.saveAndFlush(team);
         return teamMapper.entityToDto(savedTeam);
-
     }
+
 
     @Override
     public TeamResponseDto getTeamByID(Long id) {
@@ -70,13 +86,6 @@ public class TeamServiceImpl implements TeamService {
 
     @Override
     public TeamResponseDto addUserToTeam(Long teamId, Long userId, Long currentUserId) {
-        User currentUser = userRepository.findById(currentUserId)
-                .orElseThrow(() -> new NotFoundException("User not found"));
-
-        if (!currentUser.getAdmin()) {
-            throw new NotAuthorizedException("You must be an admin to perform this action");
-        }
-
         if (teamId == null || userId == null) {
             throw new BadRequestException("Team ID and User ID cannot be null!");
         }
@@ -86,17 +95,18 @@ public class TeamServiceImpl implements TeamService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("No user found with that id!"));
 
-        if(!team.getUsers().contains(user))
+        if (!team.getUsers().contains(user)) {
             team.getUsers().add(user);
-
-        if(!user.getTeams().contains(team))
+        }
+        if (!user.getTeams().contains(team)) {
             user.getTeams().add(team);
-
+        }
         teamRepository.saveAndFlush(team);
         userRepository.saveAndFlush(user);
 
         return teamMapper.entityToDto(team);
     }
+
 
     @Override
     public UserResponseDto removeUserFromTeam(Long teamId, Long userId) {
@@ -156,12 +166,14 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
+    @Transactional
     public TeamResponseDto updateTeam(Long teamId, TeamRequestDto teamRequestDto) {
         if (teamId == null) {
             throw new BadRequestException("Team ID cannot be null!");
         }
+
         Team team = teamRepository.findById(teamId)
-                .orElseThrow(() ->new NotFoundException("Team not found with this ID!"));
+                .orElseThrow(() -> new NotFoundException("Team not found with this ID!"));
 
         boolean updated = false;
 
@@ -175,14 +187,23 @@ public class TeamServiceImpl implements TeamService {
             updated = true;
         }
 
+        if (teamRequestDto.getUserIds() != null) {
+            List<User> users = userRepository.findAllById(teamRequestDto.getUserIds());
+            if (users.isEmpty()) {
+                throw new BadRequestException("A team must have at least one member!");
+            }
+            team.setUsers(users);
+            updated = true;
+        }
+
         if (!updated) {
             throw new BadRequestException("No valid fields provided for update!");
         }
 
         Team savedTeam = teamRepository.saveAndFlush(team);
         return teamMapper.entityToDto(savedTeam);
-
     }
+
 
 
     //helper method
@@ -192,5 +213,35 @@ public class TeamServiceImpl implements TeamService {
         if (teamRequestDto.getCompany() == null) throw new BadRequestException("Each team needs a required company!");
         return true;
     }
+
+    @Override
+    @Transactional
+    public void deleteTeam(Long teamId, Long userId) {
+        User currentUser = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException("User not found"));
+
+        if (!currentUser.getAdmin()) {
+            throw new NotAuthorizedException("Only admins can delete teams!");
+        }
+
+        Team team = teamRepository.findById(teamId)
+                .orElseThrow(() -> new NotFoundException("Team not found"));
+
+
+        for (User user : team.getUsers()) {
+            user.getTeams().remove(team);
+        }
+        team.getUsers().clear();
+
+
+        if (team.getProjects() != null) {
+            team.getProjects().forEach(project -> project.setTeam(null));
+        }
+
+        teamRepository.saveAndFlush(team);
+        teamRepository.delete(team);
+    }
+
+
 
 }

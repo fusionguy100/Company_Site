@@ -24,4 +24,6 @@ public interface TeamService {
     List<UserResponseDto> getAllUsers(Long teamId);
 
     TeamResponseDto updateTeam(Long teamId, TeamRequestDto teamRequestDto);
+
+    void deleteTeam(Long teamId, Long userId);
 }
