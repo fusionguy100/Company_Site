@@ -10,7 +10,11 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
+import java.sql.Timestamp;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 @Component
 @RequiredArgsConstructor
@@ -159,7 +163,14 @@ public class Loader implements ApplicationRunner {
         a.setTitle(title);
         a.setContent(content);
         a.setAuthor(author);
-        a.setCompany(company);
+        a.setCompany(company);// 1 day ago
+        Instant now = Instant.now();
+        Instant start = now.minus(7, ChronoUnit.DAYS);
+        long startMillis = start.toEpochMilli();
+        long nowMillis = now.toEpochMilli();
+        long randomMillis = ThreadLocalRandom.current().nextLong(startMillis, nowMillis);
+        a.setDate(new Timestamp(randomMillis));
+
         return a;
     }
 }
