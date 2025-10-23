@@ -18,7 +18,7 @@ public class Announcement {
 
     private Timestamp date;
     private String title;
-    private String message;
+    private String content;
 
     @ManyToOne
     @JoinColumn(name="company_id")

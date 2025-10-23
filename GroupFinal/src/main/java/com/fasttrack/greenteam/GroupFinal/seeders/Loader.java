@@ -70,30 +70,30 @@ public class Loader implements ApplicationRunner {
 
         Announcement announcement1 = new Announcement();
         announcement1.setTitle("Welcome to GreenTech Solutions!");
-        announcement1.setMessage("We are excited to have you on board.");
+        announcement1.setContent("We are excited to have you on board.");
         announcement1.setAuthor(admin);
 
         Announcement announcement2 = new Announcement();
         announcement2.setTitle("Eco Innovations Launches New Product Line");
-        announcement2.setMessage("Check out our latest sustainable products.");
+        announcement2.setContent("Check out our latest sustainable products.");
         announcement2.setAuthor(admin);
 
         List<Announcement> announcemntsList = new ArrayList<>();
         for (int i = 0; i < 50; i++) {
             Announcement announcement = new Announcement();
             announcement.setTitle("Announcement " + (i + 1));
-            announcement.setMessage("This is the message for announcement " + (i + 1) + ".");
+            announcement.setContent("This is the Content for announcement " + (i + 1) + ".");
             announcement.setAuthor(admin);
             announcemntsList.add(announcement);
         }
         Announcement announcement3 = new Announcement();
         announcement3.setTitle("Eco Innovations Launches New Product Line");
-        announcement3.setMessage("Check out our latest sustainable products.");
+        announcement3.setContent("Check out our latest sustainable products.");
         announcement3.setAuthor(admin);
 
         Announcement announcement4 = new Announcement();
         announcement4.setTitle("Eco Innovations Launches New Product Line");
-        announcement4.setMessage("Check out our latest sustainable products.");
+        announcement4.setContent("Check out our latest sustainable products.");
         announcement4.setAuthor(admin);
 
         Team team1 = new Team();

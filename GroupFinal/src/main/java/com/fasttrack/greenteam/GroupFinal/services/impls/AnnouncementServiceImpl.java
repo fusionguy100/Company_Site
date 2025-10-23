@@ -42,7 +42,7 @@ public class AnnouncementServiceImpl implements AnnouncementService {
 
     @Override
     public List<AnnouncementResponseDto> getAnnouncements() {
-        return announcementMapper.entitiesToDtos(announcementRepository.findAll());
+        return announcementMapper.entityToDtos(announcementRepository.findAll());
     }
 
     @Override
@@ -81,15 +81,15 @@ public class AnnouncementServiceImpl implements AnnouncementService {
             announcement.setTitle(announcementRequestDto.getTitle().trim());
             touched = true;
         }
-        if (announcementRequestDto.getMessage() != null && !announcementRequestDto.getMessage().isBlank()) {
-            announcement.setMessage(announcementRequestDto.getMessage().trim());
+        if (announcementRequestDto.getContent() != null && !announcementRequestDto.getContent().isBlank()) {
+            announcement.setContent(announcementRequestDto.getContent().trim());
             touched = true;
         }
         if (announcementRequestDto.getCompany() != null) {
             throw new BadRequestException("Company cannot be changed via PATCH /announcements/{id}");
         }
         if (!touched) {
-            throw new BadRequestException("Nothing to update. Provide title and/or message.");
+            throw new BadRequestException("Nothing to update. Provide title and/or Content.");
         }
 
         Announcement saved = announcementRepository.saveAndFlush(announcement);

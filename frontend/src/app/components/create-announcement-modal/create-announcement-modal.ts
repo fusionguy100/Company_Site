@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 
 export interface AnnouncementRequestDto {
   title: string;
-  message: string;
+  content: string;
   company: number;   // backend will infer author from session; no author here
 }
 
@@ -16,10 +16,7 @@ export interface AnnouncementRequestDto {
   styleUrl: './create-announcement-modal.css'
 })
 export class CreateAnnouncementModal {
-  /** company id to post under (required) */
   @Input({ required: true }) companyId!: number;
-
-  /** optional: show the company name in the modal */
   @Input() companyName?: string;
 
   @Output() close = new EventEmitter<void>();
@@ -30,17 +27,17 @@ export class CreateAnnouncementModal {
   constructor(private fb: FormBuilder) {
     this.form = this.fb.group({
       title: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(120)]],
-      message: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(225)]],
+      content: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(225)]],
     });
   }
 
   onSubmit() {
     if (this.form.invalid) return;
 
-    const { title, message } = this.form.value;
+    const { title, content } = this.form.value;
     const dto: AnnouncementRequestDto = {
       title,
-      message,
+      content,
       company: this.companyId
     };
 

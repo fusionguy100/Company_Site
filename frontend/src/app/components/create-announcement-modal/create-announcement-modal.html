@@ -11,17 +11,17 @@
             </div>
 
             <div class="form-group">
-                <label for="message">Message *</label>
-                <textarea id="message" class="form-control" formControlName="message" maxlength="225" rows="5"
+                <label for="content">Content *</label>
+                <textarea id="content" class="form-control" formControlName="content" maxlength="225" rows="5"
                     placeholder="Write your announcement..."></textarea>
 
                 <div class="char-counter">
-                    {{ (form.get('message')?.value?.length || 0) }}/225
+                    {{ (form.get('content')?.value?.length || 0) }}/225
                 </div>
 
                 <div class="field-error"
-                    *ngIf="form.get('message')?.hasError('maxlength') && form.get('message')?.touched">
-                    Message cannot exceed 225 characters.
+                    *ngIf="form.get('content')?.hasError('maxlength') && form.get('content')?.touched">
+                    Content cannot exceed 225 characters.
                 </div>
             </div>
 

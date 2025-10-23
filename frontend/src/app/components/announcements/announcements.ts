@@ -14,14 +14,14 @@ interface Announcement {
   id: number;
   date: string;
   title: string;
-  message: string;
-  company: { id: number, name: string },
-  author: { id: number, username: string, firstName: string, lastName: string }
+  content: string;
+  company: { id: number, name: string, description: string },
+  author: { id: number, username: string, firstName: string, lastName: string, admin: boolean, active: boolean }
 }
 
 interface AnnouncementRequestDto {
   title: string;
-  message: string;
+  content: string;
   company: number;
 }
 
