@@ -41,6 +41,8 @@ public class Loader implements ApplicationRunner {
         Profile adminProfile = new Profile();
         adminProfile.setFirst("System");
         adminProfile.setLast("Administrator");
+        adminProfile.setEmail("admin@example.com");
+        adminProfile.setPhone(randomUSPhoneNumber());
         admin.setProfile(adminProfile);
 
         userRepository.save(admin);
@@ -137,9 +139,19 @@ public class Loader implements ApplicationRunner {
         Profile profile = new Profile();
         profile.setFirst(first);
         profile.setLast(last);
+        profile.setEmail(username + "@example.com");
+        profile.setPhone(randomUSPhoneNumber());
         user.setProfile(profile);
 
         return user;
+    }
+
+    private static String randomUSPhoneNumber() {
+        ThreadLocalRandom rnd = ThreadLocalRandom.current();
+        int area = rnd.nextInt(200, 1000);      // 200-999 (first digit 2-9)
+        int central = rnd.nextInt(200, 1000);   // 200-999 (NXX rule)
+        int subscriber = rnd.nextInt(0, 10_000);
+        return String.format("%03d-%03d-%04d", area, central, subscriber);
     }
 
     private void linkUserToCompanyAndTeam(User user, Company company, Team team) {
