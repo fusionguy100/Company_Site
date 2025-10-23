@@ -3,6 +3,7 @@ package com.fasttrack.greenteam.GroupFinal.controllers;
 import com.fasttrack.greenteam.GroupFinal.dtos.AnnouncementRequestDto;
 import com.fasttrack.greenteam.GroupFinal.dtos.AnnouncementResponseDto;
 import com.fasttrack.greenteam.GroupFinal.services.AnnouncementService;
+import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,7 +19,7 @@ public class AnnouncementController {
     public List<AnnouncementResponseDto> getAnnouncements(){ return announcementService.getAnnouncements();}
 
     @PostMapping
-    public AnnouncementResponseDto createAnnouncement(@RequestBody AnnouncementRequestDto announcementRequestDto){return announcementService.createAnnouncement(announcementRequestDto);}
+    public AnnouncementResponseDto createAnnouncement(@RequestBody AnnouncementRequestDto announcementRequestDto, HttpSession session){return announcementService.createAnnouncement(announcementRequestDto, session);}
 
     @GetMapping("/{id}")
     public AnnouncementResponseDto getAnnouncement(@PathVariable Long id){ return announcementService.getAnnouncement(id);}

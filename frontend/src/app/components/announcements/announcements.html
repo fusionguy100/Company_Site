@@ -1,18 +1,19 @@
 <app-navbar></app-navbar>
-<div class="announcements-container">
-  <h1>Announcements Page</h1>
 
-  <div *ngIf="company; else noCompany">
-    <p>Selected company: {{ company.name }}</p>
-<div>
-  <app-navbar></app-navbar>
-  <div class="announcements-container">
+<div *ngIf="!showModal" class="announcements-container">
+  <div class="announcements-header">
     <h1>Announcements</h1>
-    <hr>
-    <app-announcement-card *ngFor="let a of announcements;"
-      [announcement]="a"></app-announcement-card>
-    <div *ngIf="company">
-      <p>Selected company: {{ company.name }}</p>
-    </div>
+    <button *ngIf="isAdmin" class="announcements-button" (click)="openModal()">New</button>
   </div>
+  <hr>
+  <app-announcement-card *ngFor="let a of announcements;" [announcement]="a"></app-announcement-card>
 </div>
+
+<app-create-announcement-modal
+  *ngIf="showModal && company"
+  [companyId]="company.id"
+  [companyName]="company.name"
+  (created)="onCreateAnnouncement($event)"
+  (close)="showModal=false">
+</app-create-announcement-modal>
+

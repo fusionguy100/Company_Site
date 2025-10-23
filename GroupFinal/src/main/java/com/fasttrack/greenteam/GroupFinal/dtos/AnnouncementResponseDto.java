@@ -16,6 +16,6 @@ public class AnnouncementResponseDto {
     private Timestamp date;
     private String title;
     private String message;
-    private CompanyResponseDto company;
-    private UserResponseDto author;
+    private CompanySummaryDto company;
+    private UserSummaryDto author;
 }

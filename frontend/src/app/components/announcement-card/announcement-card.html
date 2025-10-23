@@ -1,9 +1,9 @@
 <div class="card">
     <div class="author-date">
-        <h4>Chris, CEO</h4>
-        <p>November 17, 2022</p>
+        <h4>{{ announcement.author.firstName }}</h4>
+        <p>{{ announcement.date | date: 'longDate' }}</p>
     </div>
     <div class="message">
-        <p>Lorem ipsum our announcements go here! Our business has been going great and we are going to announce the winners of employee of the month! Lorem ipsum Lorem ipsum our announcements go here! Our business has been going great and we are going to announce the winners of employee of the month! Lorem ipsum  Lorem ipsum our announcements go here! Our business has been going great and we are going to announce the winners of employee of the month! Lorem ipsum </p>
+        <p>{{ announcement.message }}</p>
     </div>
 </div>

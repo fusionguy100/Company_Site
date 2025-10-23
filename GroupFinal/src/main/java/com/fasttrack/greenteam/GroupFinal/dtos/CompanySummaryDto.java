@@ -5,9 +5,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class UserSummaryDto {
+public class CompanySummaryDto {
     private Long id;
-    private String username;
-    private String firstName;
-    private String lastName;
+    private String name;
 }
