@@ -1,0 +1,79 @@
+.select-company-container {
+  min-height: 100vh;
+  background-color: #0b1b2b;
+  color: #e0e6eb;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 3rem 1rem;
+}
+
+.select-company-container h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1fc5a8;
+  margin-bottom: 2rem;
+  text-transform: uppercase;
+}
+
+select {
+  background-color: #102b3f;
+  color: #e0e6eb;
+  border: none;
+  border-radius: 8px;
+  padding: 0.8rem 1rem;
+  font-size: 1rem;
+  width: 260px;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+select:focus {
+  outline: none;
+  border: 2px solid #1fc5a8;
+  box-shadow: 0 0 10px rgba(31, 197, 168, 0.4);
+}
+
+button {
+  background-color: #1fc5a8;
+  color: #0b1b2b;
+  font-weight: 700;
+  border: none;
+  border-radius: 8px;
+  padding: 0.7rem 2rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 4px 12px rgba(31, 197, 168, 0.2);
+}
+
+button:hover {
+  background-color: #18a68b;
+  transform: scale(1.03);
+}
+
+button:disabled {
+  background-color: #275f52;
+  cursor: not-allowed;
+}
+
+div[ngIf] {
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  color: #b5cdd4;
+}
+
+@media (max-width: 600px) {
+  .select-company-container h1 {
+    font-size: 1.5rem;
+  }
+
+  select {
+    width: 90%;
+  }
+
+  button {
+    width: 90%;
+  }
+}

@@ -1,1 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
+html, body {
+  margin: 0;
+  padding: 0;
+  background-color: #0b1b2b; /* match your announcements background */
+  height: 100%;
+  width: 100%;
+}
