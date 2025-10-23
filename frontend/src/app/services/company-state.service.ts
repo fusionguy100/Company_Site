@@ -1,13 +1,7 @@
 // services/company-state.service.ts
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-
-export interface Company {
-  id: number;
-  name: string;
-  address?: string;
-  description?: string;
-}
+import { Company } from '../models/company.model';
 
 const STORAGE_KEY = 'selectedCompany';
 

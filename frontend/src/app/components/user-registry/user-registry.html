@@ -23,7 +23,10 @@
         <td>{{ user.profile.email }}</td>
         <td>{{ user.active ? 'YES' : 'NO' }}</td>
         <td>{{ user.admin ? 'YES' : 'NO' }}</td>
-        <td>{{ user.status ? 'JOINED' : 'PENDING' }}</td>
+        @if (user.status) {
+        <td>{{ user.status === 'JOINED' ? 'JOINED' : 'PENDING' }}</td>
+        } else {
+        <td>PENDING</td>
       </tr>
     }
   </tbody>

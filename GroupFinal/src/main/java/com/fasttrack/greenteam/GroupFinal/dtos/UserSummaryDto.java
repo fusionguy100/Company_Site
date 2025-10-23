@@ -10,4 +10,6 @@ public class UserSummaryDto {
     private String username;
     private String firstName;
     private String lastName;
+    private Boolean admin;
+    private Boolean active;
 }

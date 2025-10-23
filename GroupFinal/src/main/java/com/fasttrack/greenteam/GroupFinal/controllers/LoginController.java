@@ -36,6 +36,8 @@ public class LoginController {
 
         session.setAttribute("userId", user.getId());
         session.setAttribute("isAdmin", user.getAdmin());
+        user.setActive(Boolean.TRUE);
+        user.setStatus("JOINED");
         return ResponseEntity.ok(userMapper.entityToDto(user));
     }
 

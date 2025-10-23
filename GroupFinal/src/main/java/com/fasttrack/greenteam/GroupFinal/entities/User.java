@@ -29,7 +29,7 @@ public class User {
     private String status;
 
     @OneToMany(mappedBy="author")
-    private List<Announcement> announcements;
+    private List<Announcement> announcements = new ArrayList<>();
 
     @ManyToMany
     @JoinTable(

@@ -1,17 +1,16 @@
 package com.fasttrack.greenteam.GroupFinal.dtos;
-
-import com.fasttrack.greenteam.GroupFinal.entities.Team;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.sql.Timestamp;
+
 @Data
 @NoArgsConstructor
-public class ProjectResponseDto {
+@AllArgsConstructor
+public class ProjectSummaryDto {
     private Long id;
     private String name;
     private String description;
     private boolean active;
-    private TeamSummaryDto team;
 }

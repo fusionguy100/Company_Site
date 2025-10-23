@@ -1,7 +1,11 @@
 package com.fasttrack.greenteam.GroupFinal.mappers;
 
-import com.fasttrack.greenteam.GroupFinal.dtos.*;
+import com.fasttrack.greenteam.GroupFinal.dtos.AnnouncementRequestDto;
+import com.fasttrack.greenteam.GroupFinal.dtos.AnnouncementResponseDto;
+import com.fasttrack.greenteam.GroupFinal.dtos.CompanySummaryDto;
+import com.fasttrack.greenteam.GroupFinal.dtos.UserSummaryDto;
 import com.fasttrack.greenteam.GroupFinal.entities.Announcement;
+import com.fasttrack.greenteam.GroupFinal.entities.Company;
 import com.fasttrack.greenteam.GroupFinal.entities.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -11,30 +15,36 @@ import java.util.List;
 @Mapper(componentModel = "spring", uses = { CompanyMapper.class })
 public interface AnnouncementMapper {
 
-    // Entity -> DTO
-    @Mapping(target = "author", source = "author", qualifiedByName = "userToSummary")
-    AnnouncementResponseDto entityToDto(Announcement a);
+    @Mapping(target = "company", source="company", qualifiedByName = "mapCompanyToSummary")
+    @Mapping(target = "author", source="author", qualifiedByName = "mapUserToSummary")
+    AnnouncementResponseDto entityToDto(Announcement announcement);
+    List<AnnouncementResponseDto> entityToDtos(List<Announcement> announcements);
+    @Mapping(target="company", ignore = true)
+    Announcement dtoToEntity(AnnouncementRequestDto announcementRequestDto);
 
-    List<AnnouncementResponseDto> entitiesToDtos(List<Announcement> list);
-
-    // Request -> Entity (relations/date set in service)
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "company", ignore = true)
-    @Mapping(target = "author",  ignore = true)
-    @Mapping(target = "date",    ignore = true)
-    Announcement dtoToEntity(AnnouncementRequestDto dto);
-
-    @Named("userToSummary")
-    static UserSummaryDto userToSummary(User u) {
-        if (u == null) return null;
-        var dto = new UserSummaryDto();
-        dto.setId(u.getId());
-        if (u.getCredentials() != null) dto.setUsername(u.getCredentials().getUsername());
-        if (u.getProfile() != null) {
-            dto.setFirstName(u.getProfile().getFirst());
-            dto.setLastName(u.getProfile().getLast());
-        }
+    @Named("mapCompanyToSummary")
+    default CompanySummaryDto mapCompanyToSummary(Company company) {
+        if (company == null) return null;
+        CompanySummaryDto dto = new CompanySummaryDto();
+        dto.setId(company.getId());
+        dto.setName(company.getName());
+        dto.setDescription(company.getDescription());
         return dto;
     }
-
+    @Named("mapUserToSummary")
+    default UserSummaryDto mapUserToSummary(User user) {
+        if (user == null) return null;
+        UserSummaryDto dto = new UserSummaryDto();
+        dto.setId(user.getId());
+        if (user.getCredentials() != null) {
+            dto.setUsername(user.getCredentials().getUsername());
+        }
+        if (user.getProfile() != null) {
+            dto.setFirstName(user.getProfile().getFirst());
+            dto.setLastName(user.getProfile().getLast());
+        }
+        dto.setAdmin(user.getAdmin() != null ? user.getAdmin() : false);
+        dto.setActive(user.getActive() != null ? user.getActive() : false);
+        return dto;
+    }
 }
