@@ -4,7 +4,8 @@ import { Navbar } from '../navbar/navbar';
 import { TeamService } from '../../services/team-service';
 import { NgIf, NgFor } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { AuthService, User } from '../../services/auth';
+import { AuthService} from '../../services/auth';
+import { User } from '../../models';
 
 
 @Component({
