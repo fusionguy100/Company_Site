@@ -17,7 +17,7 @@ interface Announcement {
 @Component({
   selector: 'app-announcements',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, Navbar, AnnouncementCard],
   templateUrl: './announcements.html',
   styleUrls: ['./announcements.css']
 })
