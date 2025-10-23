@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping()
+@RequestMapping("/auth")
 @CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true")
 public class LoginController {
 
@@ -36,6 +36,8 @@ public class LoginController {
 
         session.setAttribute("userId", user.getId());
         session.setAttribute("isAdmin", user.getAdmin());
+        user.setActive(Boolean.TRUE);
+        user.setStatus("JOINED");
         return ResponseEntity.ok(userMapper.entityToDto(user));
     }
 

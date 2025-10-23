@@ -50,15 +50,21 @@ public class UserServiceImpl implements UserService {
         if (!validateCredentials(credentials) || !validateProfile(profile)) {
             throw new BadRequestException("Invalid user data");
         }
-        if (userRepository.existsByCredentialsUsernameAndActiveIsFalse(credentials.getUsername())) {
-            User user = userRepository.findByCredentialsUsernameAndCredentialsPassword(credentials.getUsername(),
-                    credentials.getPassword());
-            user.setActive(Boolean.valueOf(true));
-            user.setProfile(profileMapper.dtoToEntity(userRequestDto.getProfile()));
-            return userMapper.entityToDto(userRepository.save(user));
+//        if (userRepository.existsByCredentialsUsernameAndActiveIsFalse(credentials.getUsername())) {
+//            User user = userRepository.findByCredentialsUsernameAndCredentialsPassword(credentials.getUsername(),
+//                    credentials.getPassword());
+//            user.setActive(Boolean.valueOf(true));
+//            user.setProfile(profileMapper.dtoToEntity(userRequestDto.getProfile()));
+//            return userMapper.entityToDto(userRepository.save(user));
+//        }
+        if (userRepository.existsByCredentialsUsername(credentials.getUsername())) {
+            throw new BadRequestException("Username already exists");
         }
         User user = this.userMapper.dtoToEntity(userRequestDto);
+        user.setActive(Boolean.FALSE);
+        user.setStatus("PENDING");
         User savedUser = this.userRepository.save(user);
+
         return this.userMapper.entityToDto(savedUser);
     }
 

@@ -25,4 +25,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     List<User> findAllByAdminIsTrue();
 
     Optional<User> findById(Long id);
+
+    boolean existsByCredentialsUsername(String username);
 }

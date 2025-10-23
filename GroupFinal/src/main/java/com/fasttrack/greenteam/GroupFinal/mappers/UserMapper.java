@@ -4,6 +4,7 @@ import com.fasttrack.greenteam.GroupFinal.dtos.UserRequestDto;
 import com.fasttrack.greenteam.GroupFinal.dtos.UserResponseDto;
 import com.fasttrack.greenteam.GroupFinal.entities.User;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 import java.util.List;
 
@@ -11,6 +12,7 @@ import java.util.List;
         CompanyMapper.class, TeamMapper.class})
 public interface UserMapper {
 
+    @Mapping(target="username", source="credentials.username")
     UserResponseDto entityToDto(User user);
     List<UserResponseDto> entitiesToDtos(List<User> users);
     User dtoToEntity(UserRequestDto userRequestDto);
