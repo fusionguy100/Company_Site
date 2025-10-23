@@ -8,13 +8,13 @@
   </div>
 
   <div class="teams-grid">
-    <div
-      *ngFor="let team of teams"
-      class="team-card"
-      (click)="goToProjects(team.id, team.name)"
-      style="cursor: pointer;"
-      title="View this team's projects"
-    >
+   <div
+  *ngFor="let team of teams"
+  class="team-card"
+  [class.disabled]="!canAccessTeam(team)"
+  (click)="canAccessTeam(team) && goToProjects(team.id, team.name)"
+  [title]="canAccessTeam(team) ? 'View this team\'s projects' : 'Access restricted'"
+>
       <div class="team-header">
         <h2>{{ team.name }}</h2>
         <span class="project-count">

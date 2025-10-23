@@ -81,6 +81,14 @@ export class Teams implements OnInit {
     this.loadTeams();
     this.loadAllUsers();
   }
+  canAccessTeam(team: TeamResponseDto): boolean {
+
+  if (this.isAdmin) return true;
+
+
+  return team.users.some(u => u.id === this.currentUser?.id);
+}
+
 
   goToProjects(teamId: number, teamName: string): void {
     console.log(`Navigating to projects for team ID: ${teamId}`);
