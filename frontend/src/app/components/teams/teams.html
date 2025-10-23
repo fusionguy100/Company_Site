@@ -58,7 +58,7 @@
         <div class="add-member-row">
           <select [(ngModel)]="selectedUserId">
             <option value="">Pick a user</option>
-            <option *ngFor="let user of allUsers" [value]="user.id">
+            <option *ngFor="let user of allUsersByCompany" [value]="user.id">
               {{ user.username }}
             </option>
           </select>

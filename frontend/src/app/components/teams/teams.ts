@@ -6,6 +6,7 @@ import { NgIf, NgFor } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { AuthService} from '../../services/auth';
 import { User } from '../../models';
+import { CompanyStateService } from '../../services/company-state.service';
 
 
 @Component({
@@ -21,6 +22,7 @@ export class Teams implements OnInit {
   selectedMembers: UserResponseDto[] = [];
   selectedUserId: string = '';
   showModal = false;
+  allUsersByCompany: UserResponseDto[] = [];
 
   isAdmin = false;
   currentUser: User | null = null;
@@ -34,7 +36,8 @@ export class Teams implements OnInit {
   constructor(
     private teamService: TeamService,
     private http: HttpClient,
-    private authService: AuthService
+    private authService: AuthService,
+    private companyState: CompanyStateService
   ) {}
 
   ngOnInit(): void {
@@ -43,6 +46,7 @@ export class Teams implements OnInit {
 
     this.loadTeams();
     this.loadAllUsers();
+    this.loadAllUsersByCompany(this.companyState.getCompany()?.id || 0);
   }
 
   loadTeams(): void {
@@ -64,6 +68,15 @@ export class Teams implements OnInit {
       error: (err) => console.error('Error loading users:', err)
     });
   }
+  loadAllUsersByCompany(companyId: number): void {
+    this.http.get<UserResponseDto[]>(`http://localhost:8080/companies/${companyId}/users`, { withCredentials: true }).subscribe({
+      next: (data) => {
+        console.log('Users loaded for company:', data);
+        this.allUsersByCompany = data;
+      },
+      error: (err) => console.error('Error loading users for company:', err)
+    });
+  }
 
   openModal(): void {
     if (!this.isAdmin) {
@@ -80,7 +93,7 @@ export class Teams implements OnInit {
   }
 
   addMember(): void {
-    const user = this.allUsers.find(u => u.id === Number(this.selectedUserId));
+    const user = this.allUsersByCompany.find(u => u.id === Number(this.selectedUserId));
     if (user && !this.selectedMembers.some(m => m.id === user.id)) {
       this.selectedMembers.push(user);
     }
