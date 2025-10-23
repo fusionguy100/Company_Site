@@ -1,0 +1,9 @@
+<div class="card">
+    <div class="author-date">
+        <h4>{{ announcement.author.firstName }}</h4>
+        <p>{{ announcement.date | date: 'longDate' }}</p>
+    </div>
+    <div class="message">
+        <p>{{ announcement.message }}</p>
+    </div>
+</div>

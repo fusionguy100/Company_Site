@@ -1,0 +1,24 @@
+import { Component, Input } from '@angular/core';
+import { User } from '../../models';
+import { HttpClient } from '@angular/common/http';
+import { DatePipe } from '@angular/common';
+
+@Component({
+  selector: 'app-announcement-card',
+  imports: [DatePipe],
+  templateUrl: './announcement-card.html',
+  styleUrl: './announcement-card.css'
+})
+export class AnnouncementCard {
+
+  @Input({ required: true }) announcement!: {
+    id: number,
+    date: string,
+    title: string,
+    message: string,
+    company: { id: number, name: string },
+    author: { id: number, username: string, firstName: string, lastName: string }
+  };
+}
+
+

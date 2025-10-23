@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.fasttrack.greenteam.GroupFinal.dtos.AnnouncementResponseDto;
+import com.fasttrack.greenteam.GroupFinal.mappers.AnnouncementMapper;
+import com.fasttrack.greenteam.GroupFinal.repositories.AnnouncementRepository;
 import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
 
@@ -27,6 +30,8 @@ public class CompanyServiceImpl implements CompanyService {
     private final CompanyMapper companyMapper;
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+    private final AnnouncementRepository announcementRepository;
+    private final AnnouncementMapper announcementMapper;
 
     @Override
     public List<CompanyResponseDto> getCompanies() {
@@ -174,4 +179,9 @@ public UserResponseDto removeUserFromCompany(Long companyId, Long userId) {
 
     return userMapper.entityToDto(user);
 }
+
+    @Override
+    public List<AnnouncementResponseDto> listAnnouncements(Long id) {
+        return announcementMapper.entitiesToDtos(announcementRepository.findByCompanyId(id));
+    }
 }
