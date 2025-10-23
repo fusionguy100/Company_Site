@@ -3,8 +3,18 @@
 <div class="teams-page">
   <h1 class="page-title">Teams</h1>
 
+  <div *ngIf="teams.length === 0" class="no-teams">
+    <p>No teams found for this company.</p>
+  </div>
+
   <div class="teams-grid">
-    <div *ngFor="let team of teams" class="team-card">
+    <div
+      *ngFor="let team of teams"
+      class="team-card"
+      (click)="goToProjects(team.id)"
+      style="cursor: pointer;"
+      title="View this team's projects"
+    >
       <div class="team-header">
         <h2>{{ team.name }}</h2>
         <span class="project-count">
@@ -23,12 +33,12 @@
         </div>
       </div>
 
-      <div *ngIf="isAdmin" class="team-actions">
-        <button class="edit-btn" (click)="updateTeam(team)"> Edit</button>
-        <button class="delete-btn" (click)="deleteTeam(team.id)">🗑 Delete</button>
+      <div *ngIf="isAdmin" class="team-actions" (click)="$event.stopPropagation()">
+        <button class="edit-btn" (click)="updateTeam(team)">Edit</button>
+        <button class="members-btn" (click)="editMembers(team)">Members</button>
+        <button class="delete-btn" (click)="deleteTeam(team.id)">Delete</button>
       </div>
     </div>
-
 
     <div *ngIf="isAdmin" class="new-team-card" (click)="openModal()">
       <div class="plus-sign">+</div>
@@ -81,6 +91,30 @@
       >
         Submit
       </button>
+    </div>
+  </div>
+
+  <div class="modal-overlay" *ngIf="showMemberModal">
+    <div class="edit-members-modal">
+      <button class="close-btn" (click)="closeMemberModal()">✖</button>
+      <h2>Edit Members – {{ selectedTeam?.name }}</h2>
+
+      <div class="add-member-row">
+        <select [(ngModel)]="selectedUserId">
+          <option value="">Pick a user</option>
+          <option *ngFor="let user of allUsers" [value]="user.id">
+            {{ user.username }}
+          </option>
+        </select>
+        <button class="add-btn" (click)="addMemberToTeam()">Add</button>
+      </div>
+
+      <div class="member-tags">
+        <div *ngFor="let member of selectedTeam?.users" class="member-pill">
+          {{ member.username }}
+          <button class="remove-btn" (click)="removeMemberFromTeam(member)">✖</button>
+        </div>
+      </div>
     </div>
   </div>
 </div>

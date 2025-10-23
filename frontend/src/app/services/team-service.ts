@@ -10,6 +10,12 @@ export class TeamService {
 
   constructor(private http: HttpClient) {}
 
+getTeamsByCompany(companyId: number): Observable<TeamResponseDto[]> {
+  return this.http.get<TeamResponseDto[]>(`http://localhost:8080/companies/${companyId}/teams`, {
+    withCredentials: true
+  });
+}
+
   getAllTeams(): Observable<TeamResponseDto[]> {
     return this.http.get<TeamResponseDto[]>(this.apiUrl, { withCredentials: true });
   }
@@ -44,8 +50,9 @@ export class TeamService {
   }
 
 
-  removeUserFromTeam(teamId: number, userId: number): Observable<UserResponseDto> {
-    return this.http.delete<UserResponseDto>(
+
+  removeUserFromTeam(teamId: number, userId: number): Observable<TeamResponseDto> {
+    return this.http.delete<TeamResponseDto>(
       `${this.apiUrl}/${teamId}/users/${userId}`,
       { withCredentials: true }
     );

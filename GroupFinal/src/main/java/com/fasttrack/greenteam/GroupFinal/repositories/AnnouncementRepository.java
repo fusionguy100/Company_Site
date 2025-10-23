@@ -11,4 +11,8 @@ import java.util.Optional;
 public interface AnnouncementRepository extends JpaRepository<Announcement, Long> {
     Optional<Announcement> findAnnouncementById(Long id);
     List<Announcement> findByCompanyId(Long companyId);
+
+    List<Announcement> findByCompanyIdOrderByDateDesc(Long id);
+
+    List<Announcement> findTop10ByCompanyIdOrderByDateDesc(Long id);
 }
