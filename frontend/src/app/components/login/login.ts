@@ -1,5 +1,6 @@
 import { Router } from '@angular/router';
-import { Credentials, AuthService } from './../../services/auth';
+import { AuthService } from './../../services/auth';
+import { Credentials } from '../../models';
 import { Component } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, Validators, FormGroup } from '@angular/forms';
 

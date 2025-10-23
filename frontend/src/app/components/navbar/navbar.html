@@ -15,10 +15,28 @@
           }
         </div>
       }
+      <button routerLink="/announcements">
+        Home
+      </button>
+      @if (authService.isAdmin();) {
 
+        <button routerLink="/select-company">
+          Company
+        </button>
+      }
+      <button routerLink="/teams">
+        Teams
+      </button>
+      @if (authService.isAdmin(); ) {
+        <button routerLink="/user-registry">
+          Users
+        </button>
+      }
       <button class="btn-logout" (click)="onLogout()">
         Logout
       </button>
+
+
     </div>
   </div>
 </nav>
