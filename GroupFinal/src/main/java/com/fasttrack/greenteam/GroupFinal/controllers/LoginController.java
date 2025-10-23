@@ -4,6 +4,7 @@ import com.fasttrack.greenteam.GroupFinal.dtos.CredentialsDto;
 import com.fasttrack.greenteam.GroupFinal.dtos.UserResponseDto;
 import com.fasttrack.greenteam.GroupFinal.entities.User;
 import com.fasttrack.greenteam.GroupFinal.mappers.UserMapper;
+import com.fasttrack.greenteam.GroupFinal.repositories.UserRepository;
 import com.fasttrack.greenteam.GroupFinal.services.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.http.ResponseEntity;
@@ -16,10 +17,12 @@ public class LoginController {
 
     private final UserService userService;
     private final UserMapper userMapper;
+    private final UserRepository userRepository;
 
-    public LoginController(UserService userService, UserMapper userMapper) {
+    public LoginController(UserService userService, UserMapper userMapper, UserRepository userRepository) {
         this.userService = userService;
         this.userMapper = userMapper;
+        this.userRepository = userRepository;
     }
 
     @PostMapping("/login")
@@ -38,6 +41,7 @@ public class LoginController {
         session.setAttribute("isAdmin", user.getAdmin());
         user.setActive(Boolean.TRUE);
         user.setStatus("JOINED");
+        userRepository.save(user);
         return ResponseEntity.ok(userMapper.entityToDto(user));
     }
 

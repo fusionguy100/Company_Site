@@ -12,7 +12,9 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Component
@@ -84,6 +86,7 @@ public class Loader implements ApplicationRunner {
             announcement.setTitle("Announcement " + (i + 1));
             announcement.setContent("This is the Content for announcement " + (i + 1) + ".");
             announcement.setAuthor(admin);
+            announcement.setDate(new Timestamp(new Date().getTime() - (long)(Math.random() * 1_000_000_000)));
             announcemntsList.add(announcement);
         }
         Announcement announcement3 = new Announcement();

@@ -60,6 +60,6 @@ public UserResponseDto removeUserFromCompany(@PathVariable Long id, @PathVariabl
 }
 
     @GetMapping("/{id}/announcements")
-    public List<AnnouncementResponseDto> listAnnouncements(@PathVariable Long id) { return companyService.listAnnouncements(id); }
+    public List<AnnouncementResponseDto> listAnnouncements(@PathVariable Long id) { return companyService.listAnnouncementsByDateDesc(id); }
 
 }

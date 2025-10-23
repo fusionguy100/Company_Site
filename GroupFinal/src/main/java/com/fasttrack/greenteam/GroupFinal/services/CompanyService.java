@@ -26,4 +26,6 @@ public interface CompanyService {
     UserResponseDto removeUserFromCompany(Long companyId, Long userId);
 
     List<AnnouncementResponseDto> listAnnouncements(Long id);
+
+    List<AnnouncementResponseDto> listAnnouncementsByDateDesc(Long id);
 }

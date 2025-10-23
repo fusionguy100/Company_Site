@@ -44,7 +44,6 @@ public class AnnouncementServiceImpl implements AnnouncementService {
     public List<AnnouncementResponseDto> getAnnouncements() {
         return announcementMapper.entitiesToDtos(announcementRepository.findAll());
     }
-
     @Override
     public AnnouncementResponseDto createAnnouncement(AnnouncementRequestDto announcementRequestDto, HttpSession session) {
         Announcement a = announcementMapper.dtoToEntity(announcementRequestDto);

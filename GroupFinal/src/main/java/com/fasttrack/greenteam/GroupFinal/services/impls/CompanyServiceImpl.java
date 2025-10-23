@@ -184,4 +184,8 @@ public UserResponseDto removeUserFromCompany(Long companyId, Long userId) {
     public List<AnnouncementResponseDto> listAnnouncements(Long id) {
         return announcementMapper.entitiesToDtos(announcementRepository.findByCompanyId(id));
     }
+
+    public List<AnnouncementResponseDto> listAnnouncementsByDateDesc(Long id) {
+        return announcementMapper.entitiesToDtos(announcementRepository.findByCompanyIdOrderByDateDesc(id));
+    }
 }
