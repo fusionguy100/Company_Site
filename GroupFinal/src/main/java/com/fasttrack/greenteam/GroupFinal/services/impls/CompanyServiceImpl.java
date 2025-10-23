@@ -182,6 +182,6 @@ public UserResponseDto removeUserFromCompany(Long companyId, Long userId) {
 
     @Override
     public List<AnnouncementResponseDto> listAnnouncements(Long id) {
-        return announcementMapper.entityToDtos(announcementRepository.findByCompanyId(id));
+        return announcementMapper.entitiesToDtos(announcementRepository.findByCompanyId(id));
     }
 }
