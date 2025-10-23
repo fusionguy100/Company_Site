@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CompanyStateService, Company } from '../../services/company-state.service';
+import { Navbar } from '../navbar/navbar';
 
 @Component({
   selector: 'app-announcements',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, Navbar],
   templateUrl: './announcements.html',
   styleUrls: ['./announcements.css']
 })
