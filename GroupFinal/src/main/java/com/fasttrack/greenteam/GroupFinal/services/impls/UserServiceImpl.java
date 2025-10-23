@@ -4,6 +4,7 @@ import com.fasttrack.greenteam.GroupFinal.dtos.CredentialsDto;
 import com.fasttrack.greenteam.GroupFinal.dtos.ProfileDto;
 import com.fasttrack.greenteam.GroupFinal.dtos.UserRequestDto;
 import com.fasttrack.greenteam.GroupFinal.dtos.UserResponseDto;
+import com.fasttrack.greenteam.GroupFinal.entities.Company;
 import com.fasttrack.greenteam.GroupFinal.entities.User;
 import com.fasttrack.greenteam.GroupFinal.entities.embeddables.Credentials;
 import com.fasttrack.greenteam.GroupFinal.entities.embeddables.Profile;
@@ -11,6 +12,7 @@ import com.fasttrack.greenteam.GroupFinal.exceptions.BadRequestException;
 import com.fasttrack.greenteam.GroupFinal.exceptions.NotFoundException;
 import com.fasttrack.greenteam.GroupFinal.mappers.ProfileMapper;
 import com.fasttrack.greenteam.GroupFinal.mappers.UserMapper;
+import com.fasttrack.greenteam.GroupFinal.repositories.CompanyRepository;
 import com.fasttrack.greenteam.GroupFinal.repositories.UserRepository;
 import com.fasttrack.greenteam.GroupFinal.services.UserService;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +28,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final ProfileMapper profileMapper;
+    private final CompanyRepository companyRepository;
 
     @Override
     public List<UserResponseDto> getAllUsers() {
@@ -63,10 +66,12 @@ public class UserServiceImpl implements UserService {
         User user = this.userMapper.dtoToEntity(userRequestDto);
 
         System.out.println("Creating user: " + user);
-
-        System.out.println("User Admin: " + user.getActive());
+        System.out.println("User Admin: " + user.getAdmin());
+        user.setAdmin(userRequestDto.getIsAdmin());
         user.setActive(Boolean.FALSE);
         user.setStatus("PENDING");
+        Optional<Company> company = companyRepository.findById(userRequestDto.getCompanyId());
+        company.ifPresent(value -> user.getCompanies().add(value));
         User savedUser = this.userRepository.save(user);
 
         return this.userMapper.entityToDto(savedUser);

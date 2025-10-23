@@ -2,7 +2,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { CompanyStateService} from '../../services/company-state.service';
+import { CompanyStateService } from '../../services/company-state.service';
 import { Navbar } from '../navbar/navbar';
 import { AnnouncementCard } from '../announcement-card/announcement-card';
 import { Subscription } from 'rxjs';

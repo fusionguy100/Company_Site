@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { UserRequestDto } from '../../models';
+import { CompanyStateService } from '../../services/company-state.service';
 
 @Component({
   selector: 'app-add-user-modal',
@@ -13,7 +14,7 @@ export class AddUserModal {
   @Output() userAdded = new EventEmitter<UserRequestDto>();
   form: FormGroup;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private companyState: CompanyStateService) {
     this.form = this.fb.group({
       username: [''],
       firstName: [''],
@@ -31,6 +32,12 @@ export class AddUserModal {
     if (this.form.valid) {
       const formValue = this.form.value;
 
+      const company = this.companyState.getCompany();
+      if (!company) {
+        console.error('Company not found in state.');
+        return;
+      }
+
       // Transform flat form data into nested DTO structure for backend
       const userRequest = {
         credentials: {
@@ -43,7 +50,8 @@ export class AddUserModal {
           email: formValue.email,
           phone: formValue.phone
         },
-        isAdmin: formValue.admin
+        isAdmin: formValue.admin,
+        companyId: company.id
       };
 
       console.log('User request:', userRequest);

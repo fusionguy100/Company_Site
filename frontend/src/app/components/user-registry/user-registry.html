@@ -18,28 +18,25 @@
     </thead>
     <tbody>
       @for (user of users; track user.id) {
-        <tr>
-          <td>{{ user.profile.firstName }} {{ user.profile.lastName }}</td>
-          <td>{{ user.profile.email }}</td>
-          <td>{{ user.active ? 'YES' : 'NO' }}</td>
-          <td>{{ user.admin ? 'YES' : 'NO' }}</td>
-          <td>
-            @if (user.status === 'JOINED') {
-              JOINED
-            } @else {
-              PENDING
-            }
-          </td>
-        </tr>
+      <tr>
+        <td>{{ user.profile.firstName }} {{ user.profile.lastName }}</td>
+        <td>{{ user.profile.email }}</td>
+        <td>{{ user.active ? "YES" : "NO" }}</td>
+        <td>{{ user.admin ? "YES" : "NO" }}</td>
+        @if (user.status) {
+        <td>{{ user.status === "JOINED" ? "JOINED" : "PENDING" }}</td>
+        } @else {
+        <td>PENDING</td>
+        }
+      </tr>
       }
     </tbody>
   </table>
-
   <button (click)="openAddUser()">Add User</button>
-
   <app-add-user-modal
     *ngIf="showAddUserModal"
     (close)="closeAddUserModal()"
-    (userAdded)="onUserAdded($event)">
+    (userAdded)="onUserAdded($event)"
+  >
   </app-add-user-modal>
 </div>

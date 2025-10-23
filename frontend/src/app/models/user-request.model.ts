@@ -2,6 +2,7 @@ export interface UserRequestDto {
   credentials: CredentialsDto;
   profile: ProfileDto;
   isAdmin: boolean;
+  companyId: number;
 }
 
 export interface CredentialsDto {
