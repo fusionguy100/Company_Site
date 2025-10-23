@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -36,7 +37,7 @@ public class User {
             joinColumns = @JoinColumn(name="user_id"),
             inverseJoinColumns = @JoinColumn(name="company_id")
     )
-    private List<Company> companies;
+    private List<Company> companies = new ArrayList<>();
 
     @ManyToMany
     @JoinTable(
@@ -44,6 +45,6 @@ public class User {
             joinColumns = @JoinColumn(name="user_id"),
             inverseJoinColumns = @JoinColumn(name="team_id")
     )
-    private List<Team> teams;
+    private List<Team> teams = new ArrayList<>();
 
 }

@@ -2,6 +2,8 @@ package com.fasttrack.greenteam.GroupFinal.dtos;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -16,7 +18,7 @@ public class TeamResponseDto {
 
     private CompanyResponseDto company;
 
-    private Set<UserResponseDto> users;
+    private List<ProjectResponseDto> projects;
 
-    private Set<ProjectResponseDto> projects;
+    private List<UserSummaryDto> users;
 }

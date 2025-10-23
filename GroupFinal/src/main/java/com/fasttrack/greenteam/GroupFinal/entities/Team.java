@@ -1,7 +1,10 @@
 package com.fasttrack.greenteam.GroupFinal.entities;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -24,10 +27,10 @@ public class Team {
 
     //Many users belong to many teams (join table user_team)
     @ManyToMany(mappedBy="teams")
-    private Set<User> users = new HashSet<>();
+    private List<User> users = new ArrayList<>();
 
     @OneToMany(mappedBy = "team", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Project> projects = new HashSet<>();
+    private List<Project> projects = new ArrayList<>();
 
 
 }
