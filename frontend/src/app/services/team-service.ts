@@ -51,8 +51,8 @@ getTeamsByCompany(companyId: number): Observable<TeamResponseDto[]> {
 
 
 
-  removeUserFromTeam(teamId: number, userId: number): Observable<UserResponseDto> {
-    return this.http.delete<UserResponseDto>(
+  removeUserFromTeam(teamId: number, userId: number): Observable<TeamResponseDto> {
+    return this.http.delete<TeamResponseDto>(
       `${this.apiUrl}/${teamId}/users/${userId}`,
       { withCredentials: true }
     );
