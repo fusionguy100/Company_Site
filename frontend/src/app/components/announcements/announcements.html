@@ -1,23 +1,19 @@
 <app-navbar></app-navbar>
-<div class="announcements-container">
-  <h1>Announcements Page</h1>
 
-  <div *ngIf="company; else noCompany">
-    <p>Selected company: {{ company.name }}</p>
-    @if (company.announcements) { @for (announcement of company.announcements;
-    track announcement.id) {
-    <div class="announcement-card">
-      <h2>{{ announcement.title }}</h2>
-      <p>{{ announcement.content }}</p>
-      <p class="announcement-meta">
-        Posted by {{ announcement.authorUsername }} on
-        {{ announcement.date | date : "medium" }}
-      </p>
-    </div>
-    } }
+<div *ngIf="!showModal" class="announcements-container">
+  <div class="announcements-header">
+    <h1>Announcements</h1>
+    <button *ngIf="isAdmin" class="announcements-button" (click)="openModal()">New</button>
   </div>
-
-  <ng-template #noCompany>
-    <p>No company selected.</p>
-  </ng-template>
+  <hr>
+  <app-announcement-card *ngFor="let a of announcements;" [announcement]="a"></app-announcement-card>
 </div>
+
+<app-create-announcement-modal
+  *ngIf="showModal && company"
+  [companyId]="company.id"
+  [companyName]="company.name"
+  (created)="onCreateAnnouncement($event)"
+  (close)="showModal=false">
+</app-create-announcement-modal>
+

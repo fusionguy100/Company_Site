@@ -12,8 +12,7 @@ import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 
 import java.util.List;
-
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = { CompanyMapper.class })
 public interface AnnouncementMapper {
 
     @Mapping(target = "company", source="company", qualifiedByName = "mapCompanyToSummary")
