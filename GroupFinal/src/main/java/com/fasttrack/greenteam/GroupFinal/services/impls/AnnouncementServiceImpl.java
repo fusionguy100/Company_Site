@@ -42,7 +42,7 @@ public class AnnouncementServiceImpl implements AnnouncementService {
 
     @Override
     public List<AnnouncementResponseDto> getAnnouncements() {
-        return announcementMapper.entityToDtos(announcementRepository.findAll());
+        return announcementMapper.entitiesToDtos(announcementRepository.findAll());
     }
 
     @Override
