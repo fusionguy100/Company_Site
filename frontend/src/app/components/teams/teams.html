@@ -11,7 +11,7 @@
     <div
       *ngFor="let team of teams"
       class="team-card"
-      (click)="goToProjects(team.id)"
+      (click)="goToProjects(team.id, team.name)"
       style="cursor: pointer;"
       title="View this team's projects"
     >

@@ -2,7 +2,7 @@
 
 <div *ngIf="!showCreateModal" class="projects-container">
     <div class="projects-header">
-        <h1>Projects for Team 1</h1>
+        <h1>Projects for {{teamName}}</h1>
         <button *ngIf="isAdmin" class="projects-button" (click)="openCreateModal()">New</button>
     </div>
     <hr>

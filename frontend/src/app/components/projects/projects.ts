@@ -10,6 +10,7 @@ import { AuthService } from '../../services/auth';
 import { Company } from '../../models/company.model';
 import { ProjectCard } from '../project-card/project-card';
 import { CreateProjectModal } from '../create-project-modal/create-project-modal';
+import { ActivatedRoute } from '@angular/router';
 
 interface Project {
   id: number;
@@ -33,22 +34,30 @@ interface ProjectRequestDto {
   styleUrl: './projects.css'
 })
 export class Projects {
-  teamId: number = 3;
+  teamId: number = 0;
+  teamName: string = '';
   projects: Project[] = [];
   error = '';
   private sub?: Subscription;
   showCreateModal = false;
   isAdmin = false;
 
-  constructor(private companyState: CompanyStateService, private http: HttpClient, private authService: AuthService) { }
+  constructor(private route: ActivatedRoute,  private companyState: CompanyStateService, private http: HttpClient, private authService: AuthService) { }
 
   ngOnInit(): void {
     this.isAdmin = this.authService.isAdmin();
-    if (this.teamId > 0) this.getProjects(this.teamId);
-    else {
-      this.projects = [];
-      this.error = 'No team selected.';
-    }
+    this.route.queryParams.subscribe(params => {
+      const id = Number(params['teamId']);
+      const name = String(params['teamName']);
+      if (id && !isNaN(id) && name) {
+        this.teamId = id;
+        this.teamName = name;
+        this.getProjects(this.teamId);
+      } else {
+        this.error = 'No team selected.';
+        this.projects = [];
+      }
+    });
   }
 
   ngOnDestroy(): void {
