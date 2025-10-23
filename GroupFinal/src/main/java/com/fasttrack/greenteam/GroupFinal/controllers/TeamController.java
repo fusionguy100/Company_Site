@@ -61,7 +61,7 @@ public class TeamController {
 
     //  Only admin can remove users
     @DeleteMapping("/{teamId}/users/{userId}")
-    public UserResponseDto removeUserFromTeam(@PathVariable Long teamId,
+    public TeamResponseDto removeUserFromTeam(@PathVariable Long teamId,
                                               @PathVariable Long userId,
                                               HttpSession session) {
         Long currentUserId = (Long) session.getAttribute("userId");

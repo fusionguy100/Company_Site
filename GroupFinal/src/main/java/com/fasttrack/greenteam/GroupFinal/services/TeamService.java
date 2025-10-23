@@ -17,7 +17,7 @@ public interface TeamService {
 
     TeamResponseDto addUserToTeam(Long teamId, Long userId, Long currentUserId);
 
-    UserResponseDto removeUserFromTeam(Long teamId, Long userId);
+    TeamResponseDto removeUserFromTeam(Long teamId, Long userId);
 
     List<ProjectResponseDto> getAllProjects(Long teamId);
 

@@ -1,185 +1,165 @@
-// java
 package com.fasttrack.greenteam.GroupFinal.seeders;
 
 import com.fasttrack.greenteam.GroupFinal.entities.*;
 import com.fasttrack.greenteam.GroupFinal.entities.embeddables.Credentials;
 import com.fasttrack.greenteam.GroupFinal.entities.embeddables.Profile;
 import com.fasttrack.greenteam.GroupFinal.repositories.*;
-import com.fasttrack.greenteam.GroupFinal.services.UserService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Component
 @RequiredArgsConstructor
 public class Loader implements ApplicationRunner {
-    private final UserService userService;
+
     private final UserRepository userRepository;
     private final CompanyRepository companyRepository;
     private final TeamRepository teamRepository;
-    private final AnnouncementRepository announcementRepository;
     private final ProjectRepository projectRepository;
+    private final AnnouncementRepository announcementRepository;
 
     @Override
     @Transactional
-    public void run(ApplicationArguments args) throws Exception {
+    public void run(ApplicationArguments args) {
 
+        // ====== CREATE ADMIN USER ======
         User admin = new User();
-        admin.setAdmin(Boolean.TRUE);
-        Credentials credentials = new Credentials();
-        credentials.setUsername("admin");
-        credentials.setPassword("admin");
-        admin.setCredentials(credentials);
+        admin.setAdmin(true);
+        Credentials adminCreds = new Credentials();
+        adminCreds.setUsername("admin");
+        adminCreds.setPassword("admin");
+        admin.setCredentials(adminCreds);
 
-        Profile profile = new Profile();
-        profile.setFirst("System");
-        profile.setLast("Administrator");
-        admin.setProfile(profile);
+        Profile adminProfile = new Profile();
+        adminProfile.setFirst("System");
+        adminProfile.setLast("Administrator");
+        admin.setProfile(adminProfile);
 
         userRepository.save(admin);
-        System.out.println("Admin user created with username 'admin' and password 'admin'");
+        System.out.println("✅ Admin user created.");
 
+        // ====== CREATE USERS ======
+        User alice = createUser("alice", "Alice", "Green");
+        User bob = createUser("bob", "Bob", "Blue");
+        User charlie = createUser("charlie", "Charlie", "Brown");
+        userRepository.saveAll(List.of(alice, bob, charlie));
+        System.out.println("✅ Test users created.");
 
-        User user = new User();
-        user.setAdmin(Boolean.FALSE);
-        credentials = new Credentials();
-        credentials.setUsername("user");
-        credentials.setPassword("user");
-
-        user.setCredentials(credentials);
-
-        profile = new Profile();
-        profile.setFirst("User");
-        profile.setLast("User");
-        user.setProfile(profile);
-
-        userRepository.save(user);
-        System.out.println("User user created with username 'user' and password 'user'");
-
+        // ====== CREATE COMPANIES ======
         Company company1 = new Company();
         company1.setName("GreenTech Solutions");
-        company1.setIndustry("Renewable Energy");
+        company1.setDescription("Renewable energy innovators");
+
         Company company2 = new Company();
         company2.setName("Eco Innovations");
-        company2.setIndustry("Sustainable Products");
+        company2.setDescription("Sustainable product designers");
 
-        Announcement announcement1 = new Announcement();
-        announcement1.setTitle("Welcome to GreenTech Solutions!");
-        announcement1.setContent("We are excited to have you on board.");
-        announcement1.setAuthor(admin);
+        Company company3 = new Company();
+        company3.setName("FedEx Logistics");
+        company3.setDescription("Shipping and logistics technology");
 
-        Announcement announcement2 = new Announcement();
-        announcement2.setTitle("Eco Innovations Launches New Product Line");
-        announcement2.setContent("Check out our latest sustainable products.");
-        announcement2.setAuthor(admin);
+        companyRepository.saveAll(List.of(company1, company2, company3));
+        System.out.println("🏢 Companies created.");
 
-        List<Announcement> announcemntsList = new ArrayList<>();
-        for (int i = 0; i < 50; i++) {
-            Announcement announcement = new Announcement();
-            announcement.setTitle("Announcement " + (i + 1));
-            announcement.setContent("This is the Content for announcement " + (i + 1) + ".");
-            announcement.setAuthor(admin);
-            announcement.setDate(new Timestamp(new Date().getTime() - (long)(Math.random() * 1_000_000_000)));
-            announcemntsList.add(announcement);
-        }
-        Announcement announcement3 = new Announcement();
-        announcement3.setTitle("Eco Innovations Launches New Product Line");
-        announcement3.setContent("Check out our latest sustainable products.");
-        announcement3.setAuthor(admin);
+        // ====== CREATE TEAMS ======
+        Team greenDev = new Team();
+        greenDev.setName("Green Dev Team");
+        greenDev.setDescription("Developers at GreenTech Solutions");
+        greenDev.setCompany(company1);
 
-        Announcement announcement4 = new Announcement();
-        announcement4.setTitle("Eco Innovations Launches New Product Line");
-        announcement4.setContent("Check out our latest sustainable products.");
-        announcement4.setAuthor(admin);
+        Team ecoMarketing = new Team();
+        ecoMarketing.setName("Eco Marketing Team");
+        ecoMarketing.setDescription("Marketing at Eco Innovations");
+        ecoMarketing.setCompany(company2);
 
-        Team team1 = new Team();
-        team1.setName("Development Team");
-        Team team2 = new Team();
-        team2.setName("Marketing Team");
+        Team fedexFrontend = new Team();
+        fedexFrontend.setName("FedEx Frontend Team");
+        fedexFrontend.setDescription("Frontend developers at FedEx");
+        fedexFrontend.setCompany(company3);
 
-        // Associate users <-> companies and teams
-        company1.getUsers().add(admin);
-        company2.getUsers().add(user);
+        teamRepository.saveAll(List.of(greenDev, ecoMarketing, fedexFrontend));
+        System.out.println("👥 Teams created.");
 
-        admin.getCompanies().add(company1);
-        user.getCompanies().add(company2);
-        team1.getUsers().add(admin);
-        team2.getUsers().add(user);
-        admin.getTeams().add(team1);
-        user.getTeams().add(team2);
-        announcement1.setCompany(company1);
-        announcement2.setCompany(company1);
-        announcement3.setCompany(company1);
-        announcement4.setCompany(company1);
-        for (Announcement ann : announcemntsList) {
-            ann.setCompany(company2);
-        }
-        // Persist companies, teams, announcements
-        companyRepository.save(company1);
-        companyRepository.save(company2);
-        teamRepository.save(team1);
-        teamRepository.save(team2);
-        announcementRepository.save(announcement1);
-        announcementRepository.save(announcement2);
-        announcementRepository.save(announcement3);
-        announcementRepository.save(announcement4);
-        announcementRepository.saveAll(announcemntsList);
+        // ====== LINK USERS TO COMPANIES & TEAMS ======
+        linkUserToCompanyAndTeam(admin, company1, greenDev);
+        linkUserToCompanyAndTeam(alice, company1, greenDev);
 
-        // Ensure users reflect associations (save again)
-        userRepository.save(admin);
-        userRepository.save(user);
+        linkUserToCompanyAndTeam(admin, company2, ecoMarketing);
+        linkUserToCompanyAndTeam(bob, company2, ecoMarketing);
 
-        System.out.println("Sample companies, teams and announcements created and associated.");
-        Company company = new Company();
-        company.setName("FedEx");
-        company.setDescription("FedEx client company");
-        companyRepository.save(company);
-        System.out.println("🏢 Company created: FedEx");
+        linkUserToCompanyAndTeam(admin, company3, fedexFrontend);
+        linkUserToCompanyAndTeam(charlie, company3, fedexFrontend);
 
-        Team team = new Team();
-        team.setName("Green Team");
-        team.setDescription("Frontend developers at FedEx");
-        team.setCompany(company);
+        userRepository.saveAll(List.of(admin, alice, bob, charlie));
+        companyRepository.saveAll(List.of(company1, company2, company3));
+        teamRepository.saveAll(List.of(greenDev, ecoMarketing, fedexFrontend));
 
+        System.out.println("🔗 Users linked to companies and teams.");
 
-        team.getUsers().add(admin);
-        team.getUsers().add(user);
-        admin.getTeams().add(team);
-        user.getTeams().add(team);
+        // ====== CREATE PROJECTS ======
+        Project p1 = createProject("Solar Panel Optimizer", "Smart energy analytics", greenDev);
+        Project p2 = createProject("Eco Branding Site", "Marketing microsite", ecoMarketing);
+        Project p3 = createProject("Shipment Dashboard", "Internal logistics monitoring", fedexFrontend);
 
+        projectRepository.saveAll(List.of(p1, p2, p3));
+        System.out.println("🧱 Projects created and linked to teams.");
 
-        company.getUsers().add(admin);
+        // ====== CREATE ANNOUNCEMENTS ======
+        Announcement a1 = createAnnouncement("Welcome to GreenTech!", "We are excited to build a greener future.", admin, company1);
+        Announcement a2 = createAnnouncement("Eco Innovations Launch", "New eco-friendly products are here!", admin, company2);
+        Announcement a3 = createAnnouncement("FedEx Innovation Week", "Showcasing our latest logistics tech.", admin, company3);
+
+        announcementRepository.saveAll(List.of(a1, a2, a3));
+        System.out.println("📢 Announcements created for each company.");
+
+        System.out.println("✅ Seeder completed successfully!");
+    }
+
+    // ====== HELPER METHODS ======
+
+    private User createUser(String username, String first, String last) {
+        User user = new User();
+        user.setAdmin(false);
+
+        Credentials creds = new Credentials();
+        creds.setUsername(username);
+        creds.setPassword(username);
+        user.setCredentials(creds);
+
+        Profile profile = new Profile();
+        profile.setFirst(first);
+        profile.setLast(last);
+        user.setProfile(profile);
+
+        return user;
+    }
+
+    private void linkUserToCompanyAndTeam(User user, Company company, Team team) {
         company.getUsers().add(user);
-        admin.getCompanies().add(company);
         user.getCompanies().add(company);
+        team.getUsers().add(user);
+        user.getTeams().add(team);
+    }
 
+    private Project createProject(String name, String desc, Team team) {
+        Project project = new Project();
+        project.setName(name);
+        project.setDescription(desc);
+        project.setActive(true);
+        project.setTeam(team);
+        return project;
+    }
 
-        teamRepository.save(team);
-        companyRepository.save(company);
-        userRepository.saveAll(List.of(admin, user));
-
-        Project project1 = new Project();
-        project1.setName("Website Redesign");
-        project1.setDescription("Rebuild the landing page using Angular and Spring Boot");
-        project1.setActive(true);
-        project1.setTeam(team);  //  Link to Green Team
-
-        Project project2 = new Project();
-        project2.setName("Internal Dashboard");
-        project2.setDescription("Develop an analytics dashboard for FedEx");
-        project2.setActive(true);
-        project2.setTeam(team);
-
-        projectRepository.saveAll(List.of(project1, project2));
-
-        System.out.println(" Projects seeded and linked to Green Team!");
-
+    private Announcement createAnnouncement(String title, String content, User author, Company company) {
+        Announcement a = new Announcement();
+        a.setTitle(title);
+        a.setContent(content);
+        a.setAuthor(author);
+        a.setCompany(company);
+        return a;
     }
 }

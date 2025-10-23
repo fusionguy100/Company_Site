@@ -109,7 +109,7 @@ public class TeamServiceImpl implements TeamService {
 
 
     @Override
-    public UserResponseDto removeUserFromTeam(Long teamId, Long userId) {
+    public TeamResponseDto removeUserFromTeam(Long teamId, Long userId) {
 
         if (teamId == null || userId == null) {
             throw new BadRequestException("Team ID and User ID cannot be null!");
@@ -125,7 +125,6 @@ public class TeamServiceImpl implements TeamService {
             throw new BadRequestException("User is not part of this team!");
         }
 
-        User preDelete = user;
 
         team.getUsers().remove(user);
         user.getTeams().remove(team);
@@ -133,7 +132,7 @@ public class TeamServiceImpl implements TeamService {
         teamRepository.saveAndFlush(team);
         userRepository.saveAndFlush(user);
 
-        return userMapper.entityToDto(preDelete);
+        return teamMapper.entityToDto(team);
 
     }
 
