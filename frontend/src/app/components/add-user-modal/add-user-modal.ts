@@ -1,11 +1,12 @@
 import { Component, EventEmitter, Output } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { UserRequestDto } from '../../models';
 import { CompanyStateService } from '../../services/company-state.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-add-user-modal',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, CommonModule],
   templateUrl: './add-user-modal.html',
   styleUrl: './add-user-modal.css'
 })
@@ -16,16 +17,30 @@ export class AddUserModal {
 
   constructor(private fb: FormBuilder, private companyState: CompanyStateService) {
     this.form = this.fb.group({
-      username: [''],
-      firstName: [''],
-      lastName: [''],
-      email: [''],
-      phone: [''],
-      password: [''],
-      confirmPassword: [''],
+      username: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(20)]],
+      firstName: ['', [Validators.required, Validators.minLength(2)]],
+      lastName: ['', [Validators.required, Validators.minLength(2)]],
+      email: ['', [Validators.required, Validators.email]],
+      phone: ['', [Validators.pattern(/^\(?(\d{3})\)?[- ]?(\d{3})[- ]?(\d{4})$/)]],
+      password: ['', [Validators.required, Validators.minLength(8), Validators.pattern(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*#?&]{8,}$/)]],
+      confirmPassword: ['', [Validators.required]],
       admin: [false],
       active: [true]
-    });
+    }, { validators: this.passwordMatchValidator() });
+  }
+
+  // Custom validator to check if password and confirmPassword match
+  passwordMatchValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const password = control.get('password');
+      const confirmPassword = control.get('confirmPassword');
+
+      if (!password || !confirmPassword) {
+        return null;
+      }
+
+      return password.value === confirmPassword.value ? null : { passwordMismatch: true };
+    };
   }
 
   onSubmit() {

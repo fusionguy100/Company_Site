@@ -14,30 +14,7 @@ import { CompanyStateService } from '../../services/company-state.service';
 })
 export class UserRegistry {
 
-  users: User[] = [
-    {
-      id: 1,
-      profile: { firstName: 'John', lastName: 'Doe', email: 'john.doe@example.com' },
-      admin: false,
-      active: true,
-      status: 'JOINED'
-    }
-    ,
-    {
-      id: 2,
-      profile: { firstName: 'Jane', lastName: 'Smith', email: 'jane.smith@example.com' },
-      admin: true,
-      active: false,
-      status: 'PENDING'
-    },
-    {
-      id: 3,
-      profile: { firstName: 'Alice', lastName: 'Johnson', email: 'alice.johnson@example.com' },
-      admin: false,
-      active: true,
-      status: 'JOINED'
-    }
-  ];
+  users: User[] = [];
   showAddUserModal = false;
   constructor(private http: HttpClient, private companyState: CompanyStateService) { }
 

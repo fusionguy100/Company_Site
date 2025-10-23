@@ -90,6 +90,16 @@ label {
   outline: none;
 }
 
+.form-control.error {
+  border-color: #e74c3c;
+}
+
+.error-message {
+  margin-top: 4px;
+  font-size: 0.85rem;
+  color: #e74c3c;
+}
+
 /* Checkbox */
 .checkbox-group {
   display: flex;
