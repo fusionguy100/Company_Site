@@ -82,9 +82,9 @@ export class Teams implements OnInit {
     this.loadAllUsers();
   }
 
-  goToProjects(teamId: number): void {
+  goToProjects(teamId: number, teamName: string): void {
     console.log(`Navigating to projects for team ID: ${teamId}`);
-    this.router.navigate(['/projects'], { queryParams: { teamId } });
+    this.router.navigate(['/projects'], { queryParams: { teamId, teamName } });
   }
 
   loadTeams(): void {

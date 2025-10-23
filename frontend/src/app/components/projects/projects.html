@@ -1,0 +1,17 @@
+<app-navbar></app-navbar>
+
+<div *ngIf="!showCreateModal" class="projects-container">
+    <div class="projects-header">
+        <h1>Projects for {{teamName}}</h1>
+        <button *ngIf="isAdmin" class="projects-button" (click)="openCreateModal()">New</button>
+    </div>
+    <hr>
+    <ng-container *ngFor="let p of projects; let i = index">
+        <hr *ngIf="i > 0">
+        <app-project-card [project]="p"></app-project-card>
+    </ng-container>
+</div>
+
+<app-create-project-modal *ngIf="showCreateModal" [teamId]="teamId" (created)="onCreateProject($event)"
+    (close)="showCreateModal=false">
+</app-create-project-modal>

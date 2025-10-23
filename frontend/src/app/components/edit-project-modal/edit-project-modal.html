@@ -1,0 +1,45 @@
+<div class="modal-backdrop">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2 class="modal-name">Edit Project</h2>
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="name">Project Name *</label>
+        <input id="name" type="text" class="form-control"
+               formControlName="name" placeholder="Project Name" />
+      </div>
+
+      <div class="form-group">
+        <label for="description">Description *</label>
+        <textarea id="description" class="form-control"
+                  formControlName="description" maxlength="225" rows="5"
+                  placeholder="Write your description..."></textarea>
+
+        <div class="char-counter">
+          {{ (form.get('description')?.value?.length || 0) }}/225
+        </div>
+
+        <div class="field-error"
+             *ngIf="form.get('description')?.hasError('maxlength') && form.get('description')?.touched">
+          Description cannot exceed 225 characters.
+        </div>
+      </div>
+
+      <!-- Active / Inactive -->
+      <div class="form-group">
+        <label for="active">Status *</label>
+        <select id="active" class="form-control" formControlName="active">
+          <option [ngValue]="true">Active</option>
+          <option [ngValue]="false">Inactive</option>
+        </select>
+      </div>
+
+      <div class="modal-actions">
+        <button type="button" class="btn-cancel" (click)="onClose()">Cancel</button>
+        <button type="submit" class="btn-submit" [disabled]="form.invalid">Update</button>
+      </div>
+    </form>
+  </div>
+</div>

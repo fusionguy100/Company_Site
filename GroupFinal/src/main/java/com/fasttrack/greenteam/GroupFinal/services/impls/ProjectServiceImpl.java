@@ -2,6 +2,7 @@ package com.fasttrack.greenteam.GroupFinal.services.impls;
 
 import com.fasttrack.greenteam.GroupFinal.dtos.ProjectRequestDto;
 import com.fasttrack.greenteam.GroupFinal.dtos.ProjectResponseDto;
+import com.fasttrack.greenteam.GroupFinal.entities.Company;
 import com.fasttrack.greenteam.GroupFinal.entities.Project;
 import com.fasttrack.greenteam.GroupFinal.entities.Team;
 import com.fasttrack.greenteam.GroupFinal.exceptions.NotFoundException;
@@ -48,7 +49,15 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public ProjectResponseDto createProject(ProjectRequestDto projectRequestDto) {
-       return projectMapper.entityToDto(projectRepository.saveAndFlush(projectMapper.dtoToEntity(projectRequestDto)));
+        Project project = projectMapper.dtoToEntity(projectRequestDto);
+
+        if (projectRequestDto.getTeam() == null) {
+            throw new IllegalArgumentException("team id is required");
+        }
+        Team teamRef = teamRepository.getReferenceById(projectRequestDto.getTeam());
+        project.setTeam(teamRef);
+        Project savedProject = projectRepository.saveAndFlush(project);
+        return projectMapper.entityToDto(savedProject);
     }
 
     @Override
@@ -71,8 +80,6 @@ public class ProjectServiceImpl implements ProjectService {
         if (projectRequestDto.getTeam() != null) {
             Team team = findTeam(projectRequestDto.getTeam());
             project.setTeam(team);
-//            team.setProject(project);
-//            teamRepository.saveAndFlush(team);
         }
 
         Project saved = projectRepository.saveAndFlush(project);

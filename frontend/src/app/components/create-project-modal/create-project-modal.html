@@ -1,27 +1,27 @@
 <div class="modal-backdrop">
     <div class="modal-content" (click)="$event.stopPropagation()">
         <div class="modal-header">
-            <h2 class="modal-title">Create Announcement</h2>
+            <h2 class="modal-name">Create Project</h2>
 
         </div>
         <form [formGroup]="form" (ngSubmit)="onSubmit()">
             <div class="form-group">
-                <label for="title">Title *</label>
-                <input id="title" type="text" class="form-control" formControlName="title" placeholder="Title" />
+                <label for="name">Project Name *</label>
+                <input id="name" type="text" class="form-control" formControlName="name" placeholder="Project Name" />
             </div>
 
             <div class="form-group">
-                <label for="content">Content *</label>
-                <textarea id="content" class="form-control" formControlName="content" maxlength="225" rows="5"
-                    placeholder="Write your announcement..."></textarea>
+                <label for="description">Description *</label>
+                <textarea id="description" class="form-control" formControlName="description" maxlength="225" rows="5"
+                    placeholder="Write your description..."></textarea>
 
                 <div class="char-counter">
-                    {{ (form.get('content')?.value?.length || 0) }}/225
+                    {{ (form.get('description')?.value?.length || 0) }}/225
                 </div>
 
                 <div class="field-error"
-                    *ngIf="form.get('content')?.hasError('maxlength') && form.get('content')?.touched">
-                    Content cannot exceed 225 characters.
+                    *ngIf="form.get('description')?.hasError('maxlength') && form.get('description')?.touched">
+                    Description cannot exceed 225 characters.
                 </div>
             </div>
 

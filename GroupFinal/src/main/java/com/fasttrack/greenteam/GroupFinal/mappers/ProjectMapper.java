@@ -13,7 +13,7 @@ import java.util.List;
 @Mapper(componentModel = "spring", uses ={TeamMapper.class})
 public interface ProjectMapper {
 
-    @Mapping(target = "team", ignore = true)
+    @Mapping(target = "team", source = "team")
     ProjectResponseDto entityToDto(Project project);
     List<ProjectResponseDto> entitiesToDtos(List<Project> projects);
 
