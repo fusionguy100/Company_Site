@@ -13,4 +13,6 @@ public interface AnnouncementRepository extends JpaRepository<Announcement, Long
     List<Announcement> findByCompanyId(Long companyId);
 
     List<Announcement> findByCompanyIdOrderByDateDesc(Long id);
+
+    List<Announcement> findTop10ByCompanyIdOrderByDateDesc(Long id);
 }

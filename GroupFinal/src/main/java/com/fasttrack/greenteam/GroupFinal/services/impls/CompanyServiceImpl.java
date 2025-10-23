@@ -193,6 +193,9 @@ public UserResponseDto removeUserFromCompany(Long companyId, Long userId) {
                 .toList();
     }
 
+    public List<AnnouncementResponseDto> listAnnouncementsByDateDesc(Long id) {
+        return announcementMapper.entitiesToDtos(announcementRepository.findTop10ByCompanyIdOrderByDateDesc(id));
+    }
 
 
 }
