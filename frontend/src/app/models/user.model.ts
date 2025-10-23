@@ -9,4 +9,11 @@ export interface User {
   admin: boolean;
   active: boolean;
   status: 'JOINED' | 'PENDING';
+  companies?: CompanySummaryDto[];
+
+}
+export interface CompanySummaryDto {
+  id: number;
+  name: string;
+  description: string;
 }
