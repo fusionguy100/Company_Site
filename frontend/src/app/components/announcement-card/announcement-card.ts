@@ -1,6 +1,4 @@
 import { Component, Input } from '@angular/core';
-import { User } from '../../models';
-import { HttpClient } from '@angular/common/http';
 import { DatePipe } from '@angular/common';
 
 @Component({

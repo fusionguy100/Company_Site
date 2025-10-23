@@ -5,7 +5,7 @@ import { CommonModule } from '@angular/common';
 export interface AnnouncementRequestDto {
   title: string;
   content: string;
-  company: number;   // backend will infer author from session; no author here
+  company: number;  
 }
 
 @Component({
@@ -41,7 +41,7 @@ export class CreateAnnouncementModal {
       company: this.companyId
     };
 
-    // emit to parent; parent handles POST to /companies/{id}/announcements or /announcements
+    // emit to parent; parent handles POST to /announcements
     this.created.emit(dto);
     this.close.emit();
   }
@@ -50,9 +50,4 @@ export class CreateAnnouncementModal {
     this.close.emit();
   }
 
-  onBackdropClick(event: MouseEvent) {
-    if ((event.target as HTMLElement).classList.contains('modal-backdrop')) {
-      this.onClose();
-    }
-  }
 }

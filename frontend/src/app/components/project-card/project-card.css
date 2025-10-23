@@ -1,0 +1,48 @@
+.card{
+  color:#fff;
+  padding:20px;
+  width: min(640px, 100%);
+  margin:20px auto;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+
+.project-active-div{
+  display:flex;
+  align-items:center;
+  gap:12px;             /* was 10% */
+  font-family:"Mulish", sans-serif;
+  font-size:large;
+}
+
+.description-button-div{
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* desc far left, button far right */
+  gap: 12px;
+  width: min(640px, 100%);
+}
+
+.desc{
+  flex: 1 1 auto;   /* occupy remaining space */
+  margin: 0;
+  text-align: left; /* ensure not centered by parent styles */
+  min-width: 0;     /* prevents overflow issues */
+}
+
+.edit-button{
+  border:none;
+  padding:8px 20px;
+  border-radius:999px;
+  background:#DEB992;
+  margin-left: auto;
+  color:#0f2330;
+  font-size:16px;
+  font-weight:700;
+  cursor:pointer;
+  box-shadow:0 2px 0 rgba(0,0,0,.15);
+  transition:transform .06s ease, filter .15s ease;
+}
+.edit-button:hover{ filter:brightness(1.05); }
+.edit-button:active{ transform:scale(.98); }

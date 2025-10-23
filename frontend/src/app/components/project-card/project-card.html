@@ -1,0 +1,27 @@
+<div class="card">
+  <div class="project-active-div">
+    <h3>{{ project.name }}</h3>
+    <p [ngClass]="project.active ? 'active' : 'inactive'">
+      {{ project.active ? 'Active' : 'Inactive' }}
+    </p>
+  </div>
+
+  <div class="description-button-div">
+    <p class="desc">{{ project.description }}</p>
+    <button
+      type="button"
+      class="edit-button"
+      (click)="openEdit(project)"
+      aria-label="Edit project {{ project.name }}">
+      Edit
+    </button>
+  </div>
+</div>
+
+<app-edit-project-modal
+  *ngIf="editingProject"
+  [project]="editingProject"
+  (updated)="onProjectUpdated($event)"
+  (close)="editingProject = null">
+</app-edit-project-modal>
+

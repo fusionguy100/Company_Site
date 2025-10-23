@@ -66,7 +66,6 @@ export class Announcements implements OnInit, OnDestroy {
       next: (data) => {
         this.announcements = data;
         this.error = '';
-        console.log(this.announcements);
       },
       error: (err) => {
         this.error = 'Could not load announcements.';
@@ -80,7 +79,6 @@ export class Announcements implements OnInit, OnDestroy {
   }
 
   onCreateAnnouncement(announcementDto: AnnouncementRequestDto) {
-    console.log(announcementDto);
     const url = `http://localhost:8080/announcements`;
     this.http.post<Announcement>(url, announcementDto).subscribe({
       next: (newAnnouncement) => {
