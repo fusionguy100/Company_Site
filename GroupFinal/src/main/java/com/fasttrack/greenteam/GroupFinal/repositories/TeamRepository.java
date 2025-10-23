@@ -13,4 +13,5 @@ public interface TeamRepository extends JpaRepository <Team, Long>  {
 //    boolean existsByIdAndActiveIsTrueAndAdminIsTrue(Long userId);
 //    User findByCredentialsUsernameAndCredentialsPassword(String username, String password);
 //    boolean existsByIdAndActiveIsFalse(Long id);
+      List<Team> findByCompanyId(Long companyId);
 }
