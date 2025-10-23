@@ -15,9 +15,9 @@ export class AnnouncementCard {
     id: number,
     date: string,
     title: string,
-    message: string,
-    company: { id: number, name: string },
-    author: { id: number, username: string, firstName: string, lastName: string }
+    content: string,
+    company: { id: number, name: string, description: string },
+    author: { id: number, username: string, firstName: string, lastName: string, admin: boolean, active: boolean }
   };
 }
 

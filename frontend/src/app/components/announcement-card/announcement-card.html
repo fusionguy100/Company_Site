@@ -3,7 +3,8 @@
         <h4>{{ announcement.author.firstName }}</h4>
         <p>{{ announcement.date | date: 'longDate' }}</p>
     </div>
-    <div class="message">
-        <p>{{ announcement.message }}</p>
+    <h3>{{announcement.title}}</h3>
+    <div class="content">
+        <p>{{ announcement.content }}</p>
     </div>
 </div>

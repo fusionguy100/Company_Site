@@ -2,25 +2,26 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { CompanyStateService, Company } from '../../services/company-state.service';
+import { CompanyStateService} from '../../services/company-state.service';
 import { Navbar } from '../navbar/navbar';
 import { AnnouncementCard } from '../announcement-card/announcement-card';
 import { Subscription } from 'rxjs';
 import { CreateAnnouncementModal } from '../create-announcement-modal/create-announcement-modal';
 import { AuthService } from '../../services/auth';
+import { Company } from '../../models/company.model';
 
 interface Announcement {
   id: number;
   date: string;
   title: string;
-  message: string;
-  company: { id: number, name: string },
-  author: { id: number, username: string, firstName: string, lastName: string }
+  content: string;
+  company: { id: number, name: string, description: string },
+  author: { id: number, username: string, firstName: string, lastName: string, admin: boolean, active: boolean }
 }
 
 interface AnnouncementRequestDto {
   title: string;
-  message: string;
+  content: string;
   company: number;
 }
 
