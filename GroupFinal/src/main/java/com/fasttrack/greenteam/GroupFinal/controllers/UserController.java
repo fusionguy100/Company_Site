@@ -3,7 +3,9 @@ package com.fasttrack.greenteam.GroupFinal.controllers;
 import com.fasttrack.greenteam.GroupFinal.dtos.CredentialsDto;
 import com.fasttrack.greenteam.GroupFinal.dtos.UserRequestDto;
 import com.fasttrack.greenteam.GroupFinal.dtos.UserResponseDto;
+import com.fasttrack.greenteam.GroupFinal.exceptions.NotAuthorizedException;
 import com.fasttrack.greenteam.GroupFinal.services.UserService;
+import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,7 +23,11 @@ public class UserController {
         return userService.getAllUsers();
     }
     @PostMapping()
-    public UserResponseDto createUser(@RequestBody UserRequestDto userRequestDto) {
+    public UserResponseDto createUser(@RequestBody UserRequestDto userRequestDto, HttpSession session) {
+        if (session.getAttribute("userId") == null || session.getAttribute("isAdmin") == null || !(Boolean) session.getAttribute("isAdmin")) {
+            throw new NotAuthorizedException("Only admins can create new users.");
+        }
+
         return userService.createUser(userRequestDto);
     }
     @GetMapping("/{id}")
