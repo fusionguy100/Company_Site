@@ -12,7 +12,7 @@ import { Projects } from './components/projects/projects';
 
 export const routes: Routes = [
   { path: 'login', component: Login, canActivate: [loginGuard] },
-  { path: 'select-company', component: SelectCompany, canActivate: [authGuard] },
+  { path: 'select-company', component: SelectCompany, canActivate: [authGuard, adminGuard] },
   { path: 'announcements', component: Announcements, canActivate: [authGuard, companyGuard] },
   { path: 'teams', component: Teams, canActivate: [authGuard, companyGuard] },
   { path: 'projects', component: Projects, canActivate: [authGuard, companyGuard] },

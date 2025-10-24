@@ -3,6 +3,7 @@ import { AuthService } from './../../services/auth';
 import { Credentials } from '../../models';
 import { Component } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, Validators, FormGroup } from '@angular/forms';
+import { CompanyStateService } from '../../services/company-state.service';
 
 @Component({
   selector: 'app-login',
@@ -16,7 +17,7 @@ export class Login {
   errorMessage: string | null = '';
   isLoading = false;
 
-  constructor(private authService: AuthService, private router: Router, private fb: FormBuilder) {
+  constructor(private authService: AuthService, private router: Router, private fb: FormBuilder, private companyState: CompanyStateService) {
     this.form = this.fb.group({
       username: ['', [Validators.required]],
       password: ['', [Validators.required]]
@@ -40,6 +41,17 @@ export class Login {
         if (user.admin) {
           this.router.navigate(['/select-company']);
         } else {
+          // Auto-set company for non-admin users from their profile
+          if (user.companies && user.companies.length > 0) {
+            this.companyState.setCompany({
+              id: user.companies[0].id,
+              name: user.companies[0].name,
+              description: user.companies[0].description
+            });
+            console.log('Auto-selected company for non-admin user:', user.companies[0].name);
+          } else {
+            console.warn('Non-admin user has no associated companies!');
+          }
           this.router.navigate(['/announcements']);
         }
       },
