@@ -87,12 +87,18 @@ public class Loader implements ApplicationRunner {
         fedexFrontend.setDescription("Frontend developers at FedEx");
         fedexFrontend.setCompany(company3);
 
-        teamRepository.saveAll(List.of(greenDev, ecoMarketing, fedexFrontend));
+        Team adminOnly = new Team();
+        adminOnly.setName("Admin Only Team");
+        adminOnly.setDescription("A Team for admin users only");
+        adminOnly.setCompany(company1);
+
+        teamRepository.saveAll(List.of(greenDev, ecoMarketing, fedexFrontend, adminOnly));
         System.out.println("👥 Teams created.");
 
         // ====== LINK USERS TO COMPANIES & TEAMS ======
         linkUserToCompanyAndTeam(admin, company1, greenDev);
         linkUserToCompanyAndTeam(alice, company1, greenDev);
+        linkUserToCompanyAndTeam(admin, company1, adminOnly);
 
         linkUserToCompanyAndTeam(admin, company2, ecoMarketing);
         linkUserToCompanyAndTeam(bob, company2, ecoMarketing);
@@ -102,7 +108,7 @@ public class Loader implements ApplicationRunner {
 
         userRepository.saveAll(List.of(admin, alice, bob, charlie));
         companyRepository.saveAll(List.of(company1, company2, company3));
-        teamRepository.saveAll(List.of(greenDev, ecoMarketing, fedexFrontend));
+        teamRepository.saveAll(List.of(greenDev, ecoMarketing, fedexFrontend, adminOnly));
 
         System.out.println("🔗 Users linked to companies and teams.");
 
